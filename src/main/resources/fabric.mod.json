@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "glintcolorizer",
+	"version": "${version}",
+	"name": "glintcolorizer",
+	"description": "Customize the glint visuals.",
+	"authors": [
+		"Polyfrost",
+		"lowercasebtw"
+	],
+	"icon": "assets/glintcolorizer/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"btw.lowercase.glintcolorizer.GlintColorizer"
+		],
+		"modmenu": [
+			"btw.lowercase.glintcolorizer.config.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		"glintcolorizer.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.0",
+		"minecraft": "~1.21.5",
+		"fabric-api": "*",
+		"yet_another_config_lib_v3": "*"
+	}
+}

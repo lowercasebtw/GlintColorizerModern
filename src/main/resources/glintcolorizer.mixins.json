@@ -1,0 +1,19 @@
+{
+	"required": true,
+	"package": "btw.lowercase.glintcolorizer.mixins",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"MixinItemRenderer",
+		"MixinRenderBuffers",
+		"MixinCompositeRenderType",
+		"accessor.RenderPipelinesAccessor",
+		"accessor.RenderTypeAccessor",
+		"accessor.RenderTypeCompositeStateBuilderAccessor"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
