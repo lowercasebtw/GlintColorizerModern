@@ -31,8 +31,8 @@ public class GlintMetadata {
         };
     }
 
-    public static float[] getColor(GlintLayer layer) {
-        BaseGlint options = getRenderingOptions();
+    public static float[] getGlintColor(GlintLayer layer, boolean isArmor) {
+        BaseGlint options = isArmor ? GlintColorizerConfig.instance().armorGlint : getRenderingOptions();
         if (options.individualStrokes) {
             if (layer == GlintLayer.FIRST) {
                 return options.strokeOneColor.getRGBColorComponents(null);

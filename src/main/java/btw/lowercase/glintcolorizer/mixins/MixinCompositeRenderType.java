@@ -1,6 +1,5 @@
 package btw.lowercase.glintcolorizer.mixins;
 
-import btw.lowercase.glintcolorizer.GlintColorizer;
 import btw.lowercase.glintcolorizer.GlintLayer;
 import btw.lowercase.glintcolorizer.GlintMetadata;
 import btw.lowercase.glintcolorizer.GlintPipeline;
@@ -26,10 +25,11 @@ public abstract class MixinCompositeRenderType {
     @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderPass;setIndexBuffer(Lcom/mojang/blaze3d/buffers/GpuBuffer;Lcom/mojang/blaze3d/vertex/VertexFormat$IndexType;)V", shift = At.Shift.AFTER))
     private void glintcolorizer$applyGlintColor(MeshData meshData, CallbackInfo ci, @Local RenderPass renderPass) {
         if (GlintColorizerConfig.instance().useCustomRenderer) {
-            if (this.renderPipeline == GlintPipeline.GLINT_1ST_LAYER_PIPELINE) {
-                renderPass.setUniform("GlintColor", GlintMetadata.getColor(GlintLayer.FIRST));
-            } else if (this.renderPipeline == GlintPipeline.GLINT_2ND_LAYER_PIPELINE) {
-                renderPass.setUniform("GlintColor", GlintMetadata.getColor(GlintLayer.SECOND));
+            final boolean isArmor = this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE;
+            if (this.renderPipeline == GlintPipeline.ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE) {
+                renderPass.setUniform("GlintColor", GlintMetadata.getGlintColor(GlintLayer.FIRST, isArmor));
+            } else if (this.renderPipeline == GlintPipeline.ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE) {
+                renderPass.setUniform("GlintColor", GlintMetadata.getGlintColor(GlintLayer.SECOND, isArmor));
             }
         }
     }

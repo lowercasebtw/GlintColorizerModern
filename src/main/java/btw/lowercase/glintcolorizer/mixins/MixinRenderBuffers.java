@@ -16,8 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinRenderBuffers {
     @Inject(method = "put", at = @At("HEAD"))
     private static void glintcolorizer$addGlintLayers(Object2ObjectLinkedOpenHashMap<RenderType, ByteBufferBuilder> map, RenderType renderType, CallbackInfo ci) {
-        glintcolorizer$addRenderType(GlintPipeline.GLINT_1ST_LAYER_RENDERTYPE, map);
-        glintcolorizer$addRenderType(GlintPipeline.GLINT_2ND_LAYER_RENDERTYPE, map);
+        glintcolorizer$addRenderType(GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE, map);
+        glintcolorizer$addRenderType(GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE, map);
+        glintcolorizer$addRenderType(GlintPipeline.ARMOR_GLINT_1ST_LAYER_RENDERTYPE, map);
+        glintcolorizer$addRenderType(GlintPipeline.ARMOR_GLINT_2ND_LAYER_RENDERTYPE, map);
     }
 
     @Unique

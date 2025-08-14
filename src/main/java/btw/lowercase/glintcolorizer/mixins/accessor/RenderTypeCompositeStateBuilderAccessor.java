@@ -13,9 +13,6 @@ public interface RenderTypeCompositeStateBuilderAccessor {
     @Invoker("setLayeringState")
     RenderType.CompositeState.CompositeStateBuilder withLayeringState(RenderStateShard.LayeringStateShard layeringStateShard);
 
-    @Invoker("setOutputState")
-    RenderType.CompositeState.CompositeStateBuilder withOutputState(RenderStateShard.OutputStateShard outputStateShard);
-
     @Invoker("setTexturingState")
     RenderType.CompositeState.CompositeStateBuilder withTexturingState(RenderStateShard.TexturingStateShard texturingStateShard);
 

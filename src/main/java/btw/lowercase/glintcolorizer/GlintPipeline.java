@@ -1,5 +1,6 @@
 package btw.lowercase.glintcolorizer;
 
+import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderPipelinesAccessor;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderTypeAccessor;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderTypeCompositeStateBuilderAccessor;
@@ -10,6 +11,8 @@ import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -25,47 +28,50 @@ public class GlintPipeline {
             RenderPipeline.builder(RenderPipelinesAccessor.getMatricesColorFogSnippet())
                     .withVertexShader(GlintColorizer.id("core/glint"))
                     .withFragmentShader(GlintColorizer.id("core/glint"))
-                    .withColorWrite(true, false)
-                    .withCull(true)
                     .withBlend(BlendFunction.GLINT)
                     .withDepthTestFunction(DepthTestFunction.EQUAL_DEPTH_TEST)
-                    .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
                     .withSampler("Sampler0")
                     .withUniform("GlintColor", UniformType.VEC3)
+                    .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
                     .buildSnippet();
 
-    public static final RenderPipeline GLINT_1ST_LAYER_PIPELINE = RenderPipelines.register(
+    // Item
+    private static final RenderPipeline.Snippet ITEM_GLINT_PIPELINE_SNIPPET =
             RenderPipeline.builder(GLINT_PIPELINE_SNIPPET)
-                    .withLocation(GlintColorizer.id("pipeline/glint_layer_1"))
+                    .withColorWrite(true, false)
+                    .withCull(true)
+                    .buildSnippet();
+
+    public static final RenderPipeline ITEM_GLINT_1ST_LAYER_PIPELINE = RenderPipelines.register(
+            RenderPipeline.builder(ITEM_GLINT_PIPELINE_SNIPPET)
+                    .withLocation(GlintColorizer.id("pipeline/item_glint_layer_1"))
                     .build());
 
-    public static final RenderPipeline GLINT_2ND_LAYER_PIPELINE = RenderPipelines.register(
-            RenderPipeline.builder(GLINT_PIPELINE_SNIPPET)
-                    .withLocation(GlintColorizer.id("pipeline/glint_layer_2"))
+    public static final RenderPipeline ITEM_GLINT_2ND_LAYER_PIPELINE = RenderPipelines.register(
+            RenderPipeline.builder(ITEM_GLINT_PIPELINE_SNIPPET)
+                    .withLocation(GlintColorizer.id("pipeline/item_glint_layer_2"))
                     .build());
 
-    public static final RenderType GLINT_1ST_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
-            "glint_layer_1_texturing",
+    public static final RenderType ITEM_GLINT_1ST_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
+            "item_glint_layer_1_texturing",
             () -> {
                 final float tilt = (getSystemTime() % 3000L) / 3000.0F / 8.0F;
-                Matrix4f matrix4f = new Matrix4f();
-                matrix4f.scale(8.0F * GlintMetadata.getRenderingOptions().scale);
-                matrix4f.translate(tilt * GlintMetadata.getRenderingOptions().speed, 0.0F, 0.0F);
-                matrix4f.rotateZ(GlintMetadata.getRenderingOptions().strokeOneRotation * (float) Math.PI / 180.0F);
-                RenderSystem.setTextureMatrix(matrix4f);
+                RenderSystem.setTextureMatrix(new Matrix4f()
+                        .scale(8.0F * GlintMetadata.getRenderingOptions().scale)
+                        .translate(tilt * GlintMetadata.getRenderingOptions().speed, 0.0F, 0.0F)
+                        .rotateZ((float) Math.toRadians(GlintMetadata.getRenderingOptions().strokeOneRotation)));
             },
             RenderSystem::resetTextureMatrix
     ), GlintLayer.FIRST);
 
-    public static final RenderType GLINT_2ND_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
-            "glint_layer_2_texturing",
+    public static final RenderType ITEM_GLINT_2ND_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
+            "item_glint_layer_2_texturing",
             () -> {
                 final float tilt = (getSystemTime() % 4873L) / 4873.0F / 8.0F;
-                Matrix4f matrix4f = new Matrix4f();
-                matrix4f.scale(8.0F * GlintMetadata.getRenderingOptions().scale);
-                matrix4f.translate(-tilt * GlintMetadata.getRenderingOptions().speed, 0.0F, 0.0F);
-                matrix4f.rotateZ(GlintMetadata.getRenderingOptions().strokeTwoRotation * (float) Math.PI / 180.0F);
-                RenderSystem.setTextureMatrix(matrix4f);
+                RenderSystem.setTextureMatrix(new Matrix4f()
+                        .scale(8.0F * GlintMetadata.getRenderingOptions().scale)
+                        .translate(-tilt * GlintMetadata.getRenderingOptions().speed, 0.0F, 0.0F)
+                        .rotateZ((float) Math.toRadians(GlintMetadata.getRenderingOptions().strokeTwoRotation)));
             },
             RenderSystem::resetTextureMatrix
     ), GlintLayer.SECOND);
@@ -74,14 +80,64 @@ public class GlintPipeline {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
         compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, TriState.DEFAULT, false));
         compositeStateBuilder.withTexturingState(texturingStateShard);
-        compositeStateBuilder.withOutputState(RenderType.MAIN_TARGET);
         return RenderTypeAccessor.createRenderType(
-                "glint_layer_" + (layer.ordinal() + 1),
+                "item_glint_layer_" + (layer.ordinal() + 1),
                 1536,
-                layer == GlintLayer.FIRST ? GLINT_1ST_LAYER_PIPELINE : GLINT_2ND_LAYER_PIPELINE,
+                layer == GlintLayer.FIRST ? ITEM_GLINT_1ST_LAYER_PIPELINE : ITEM_GLINT_2ND_LAYER_PIPELINE,
                 compositeStateBuilder.buildCompositeState(false));
     }
 
+    // Armor
+    private static final RenderPipeline.Snippet ARMOR_GLINT_PIPELINE_SNIPPET =
+            RenderPipeline.builder(GLINT_PIPELINE_SNIPPET)
+                    .withDepthWrite(false)
+                    .buildSnippet();
+
+    public static final RenderPipeline ARMOR_GLINT_1ST_LAYER_PIPELINE = RenderPipelines.register(
+            RenderPipeline.builder(ARMOR_GLINT_PIPELINE_SNIPPET)
+                    .withLocation(GlintColorizer.id("pipeline/armor_glint_layer_1"))
+                    .build());
+
+    public static final RenderPipeline ARMOR_GLINT_2ND_LAYER_PIPELINE = RenderPipelines.register(
+            RenderPipeline.builder(ARMOR_GLINT_PIPELINE_SNIPPET)
+                    .withLocation(GlintColorizer.id("pipeline/armor_glint_layer_2"))
+                    .build());
+
+
+    public static final RenderType ARMOR_GLINT_1ST_LAYER_RENDERTYPE = makeArmorGlintLayer(new RenderStateShard.TexturingStateShard(
+            "armor_glint_layer_1_texturing",
+            () -> setupArmorGlintTexturing(0),
+            RenderSystem::resetTextureMatrix
+    ), GlintLayer.FIRST);
+
+    public static final RenderType ARMOR_GLINT_2ND_LAYER_RENDERTYPE = makeArmorGlintLayer(new RenderStateShard.TexturingStateShard(
+            "armor_glint_layer_2_texturing",
+            () -> setupArmorGlintTexturing(1),
+            RenderSystem::resetTextureMatrix
+    ), GlintLayer.SECOND);
+
+    private static RenderType makeArmorGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer) {
+        RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
+        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, TriState.DEFAULT, false));
+        compositeStateBuilder.withTexturingState(texturingStateShard);
+        compositeStateBuilder.withLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING);
+        return RenderTypeAccessor.createRenderType(
+                "armor_glint_layer_" + (layer.ordinal() + 1),
+                1536,
+                layer == GlintLayer.FIRST ? ARMOR_GLINT_1ST_LAYER_PIPELINE : ARMOR_GLINT_2ND_LAYER_PIPELINE,
+                compositeStateBuilder.buildCompositeState(false));
+    }
+
+    private static void setupArmorGlintTexturing(int ordinal) {
+        final long time = (long) (Util.getMillis() * GlintColorizerConfig.instance().armorGlint.speed * 8.0);
+        final float tilt = (float) (time % 30000L) / 30000.0F;
+        RenderSystem.setTextureMatrix(new Matrix4f()
+                .scale(0.33333334F, 0.33333334F, 0.33333334F)
+                .rotateZ((float) Math.toRadians(30.0F - (float) ordinal * 60.0F))
+                .translate(0.0F, tilt * (0.001F + (float) ordinal * 0.003F) * 20.0F, 0.0F));
+    }
+
+    // Utility
     private static float getSystemTime() {
         return (float) (GLFW.glfwGetTime() * 1000.0F);
     }

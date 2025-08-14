@@ -34,12 +34,30 @@ public abstract class MixinItemRenderer {
     }
 
     @Inject(method = "getFoilBuffer", at = @At("RETURN"), cancellable = true)
-    private static void glintcolorizer$replaceWithCustomRenderer$default(MultiBufferSource multiBufferSource, RenderType renderType, boolean isEntity, boolean hasFoil, CallbackInfoReturnable<VertexConsumer> cir) {
+    private static void glintcolorizer$replaceWithCustomRenderer$default(MultiBufferSource multiBufferSource, RenderType itemRenderType, boolean isEntity, boolean hasFoil, CallbackInfoReturnable<VertexConsumer> cir) {
         if (GlintColorizerConfig.instance().useCustomRenderer && hasFoil) {
-            VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.GLINT_1ST_LAYER_RENDERTYPE);
-            VertexConsumer secondGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.GLINT_2ND_LAYER_RENDERTYPE);
-            VertexConsumer itemVertexConsumer = multiBufferSource.getBuffer(renderType);
-            cir.setReturnValue(VertexMultiConsumer.create(firstGlintLayerVertexConsumer, VertexMultiConsumer.create(secondGlintLayerVertexConsumer, itemVertexConsumer)));
+            final VertexConsumer itemVertexConsumer = multiBufferSource.getBuffer(itemRenderType);
+            if (GlintMetadata.getRenderingOptions().enabled) {
+                VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE);
+                VertexConsumer secondGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE);
+                cir.setReturnValue(VertexMultiConsumer.create(firstGlintLayerVertexConsumer, VertexMultiConsumer.create(secondGlintLayerVertexConsumer, itemVertexConsumer)));
+            } else {
+                cir.setReturnValue(itemVertexConsumer);
+            }
+        }
+    }
+
+    @Inject(method = "getArmorFoilBuffer", at = @At("RETURN"), cancellable = true)
+    private static void glintcolorizer$replaceWithCustomRenderer$armor(MultiBufferSource multiBufferSource, RenderType armorRenderType, boolean hasFoil, CallbackInfoReturnable<VertexConsumer> cir) {
+        if (GlintColorizerConfig.instance().useCustomRenderer && hasFoil) {
+            final VertexConsumer armorVertexConsumer = multiBufferSource.getBuffer(armorRenderType);
+            if (GlintColorizerConfig.instance().armorGlint.enabled) {
+                VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ARMOR_GLINT_1ST_LAYER_RENDERTYPE);
+                VertexConsumer secondGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ARMOR_GLINT_2ND_LAYER_RENDERTYPE);
+                cir.setReturnValue(VertexMultiConsumer.create(firstGlintLayerVertexConsumer, VertexMultiConsumer.create(secondGlintLayerVertexConsumer, armorVertexConsumer)));
+            } else {
+                cir.setReturnValue(armorVertexConsumer);
+            }
         }
     }
 }
