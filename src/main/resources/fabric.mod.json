@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "glintcolorizer",
 	"version": "${version}",
-	"name": "glintcolorizer",
-	"description": "Customize the glint visuals.",
+	"name": "GlintColorizer",
+	"description": "Customize the glint of enchanted items.",
 	"authors": [
 		"Polyfrost",
 		"lowercasebtw"

@@ -72,7 +72,7 @@ public class BaseGlint {
                         defaults.strokeTwoColor,
                         () -> config.strokeTwoColor,
                         (newVal) -> config.strokeTwoColor = newVal)
-                .controller((option) -> ColorControllerBuilder.create(option).allowAlpha(true))
+                .controller(ColorControllerBuilder::create)
                 .build());
         builder.option(Option.<Integer>createBuilder()
                 .name(Component.literal("Stroke 2 Rotation"))
