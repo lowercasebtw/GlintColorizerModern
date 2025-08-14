@@ -103,7 +103,6 @@ public class GlintPipeline {
                     .withLocation(GlintColorizer.id("pipeline/armor_glint_layer_2"))
                     .build());
 
-
     public static final RenderType ARMOR_GLINT_1ST_LAYER_RENDERTYPE = makeArmorGlintLayer(new RenderStateShard.TexturingStateShard(
             "armor_glint_layer_1_texturing",
             () -> setupArmorGlintTexturing(0),
@@ -129,10 +128,11 @@ public class GlintPipeline {
     }
 
     private static void setupArmorGlintTexturing(int ordinal) {
-        final long time = (long) (Util.getMillis() * GlintColorizerConfig.instance().armorGlint.speed * 8.0);
-        final float tilt = (float) (time % 30000L) / 30000.0F;
+        // TODO/NOTE: Tilt is not accurate, looking into finding a good replacement/way to do it
+        final float tilt = (float) ((Util.getMillis() * GlintColorizerConfig.instance().armorGlint.speed * 8.0) % 300000L) / 3000.0F;
+        final float scale = 0.33333334F * GlintColorizerConfig.instance().armorGlint.scale;
         RenderSystem.setTextureMatrix(new Matrix4f()
-                .scale(0.33333334F, 0.33333334F, 0.33333334F)
+                .scale(scale, scale, scale)
                 .rotateZ((float) Math.toRadians(30.0F - (float) ordinal * 60.0F))
                 .translate(0.0F, tilt * (0.001F + (float) ordinal * 0.003F) * 20.0F, 0.0F));
     }
