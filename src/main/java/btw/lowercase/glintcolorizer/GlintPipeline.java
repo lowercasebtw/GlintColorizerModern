@@ -105,13 +105,25 @@ public class GlintPipeline {
 
     public static final RenderType ARMOR_GLINT_1ST_LAYER_RENDERTYPE = makeArmorGlintLayer(new RenderStateShard.TexturingStateShard(
             "armor_glint_layer_1_texturing",
-            () -> setupArmorGlintTexturing(0),
+            () -> {
+                final float scale = 0.33333334F * GlintColorizerConfig.instance().armorGlint.scale;
+                RenderSystem.setTextureMatrix(new Matrix4f()
+                        .scale(scale, scale, scale)
+                        .rotateZ((float) Math.toRadians(30.0F - GlintColorizerConfig.instance().armorGlint.strokeOneRotation))
+                        .translate(0.0F, getArmorTilt() * 0.001F * 20.0F, 0.0F));
+            },
             RenderSystem::resetTextureMatrix
     ), GlintLayer.FIRST);
 
     public static final RenderType ARMOR_GLINT_2ND_LAYER_RENDERTYPE = makeArmorGlintLayer(new RenderStateShard.TexturingStateShard(
             "armor_glint_layer_2_texturing",
-            () -> setupArmorGlintTexturing(1),
+            () -> {
+                final float scale = 0.33333334F * GlintColorizerConfig.instance().armorGlint.scale;
+                RenderSystem.setTextureMatrix(new Matrix4f()
+                        .scale(scale, scale, scale)
+                        .rotateZ((float) Math.toRadians(30.0F - GlintColorizerConfig.instance().armorGlint.strokeTwoRotation))
+                        .translate(0.0F, getArmorTilt() * (0.001F + 0.003F) * 20.0F, 0.0F));
+            },
             RenderSystem::resetTextureMatrix
     ), GlintLayer.SECOND);
 
@@ -127,17 +139,12 @@ public class GlintPipeline {
                 compositeStateBuilder.buildCompositeState(false));
     }
 
-    private static void setupArmorGlintTexturing(int ordinal) {
+    // Utility
+    private static float getArmorTilt() {
         // TODO/NOTE: Tilt is not accurate, looking into finding a good replacement/way to do it
-        final float tilt = (float) ((Util.getMillis() * GlintColorizerConfig.instance().armorGlint.speed * 8.0) % 300000L) / 3000.0F;
-        final float scale = 0.33333334F * GlintColorizerConfig.instance().armorGlint.scale;
-        RenderSystem.setTextureMatrix(new Matrix4f()
-                .scale(scale, scale, scale)
-                .rotateZ((float) Math.toRadians(30.0F - (float) ordinal * 60.0F))
-                .translate(0.0F, tilt * (0.001F + (float) ordinal * 0.003F) * 20.0F, 0.0F));
+        return (float) ((Util.getMillis() * GlintColorizerConfig.instance().armorGlint.speed * 8.0) % 300000L) / 3000.0F;
     }
 
-    // Utility
     private static float getSystemTime() {
         return (float) (GLFW.glfwGetTime() * 1000.0F);
     }
