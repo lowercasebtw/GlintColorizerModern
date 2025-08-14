@@ -108,7 +108,7 @@ public class GlintPipeline {
             () -> {
                 final float scale = 0.33333334F * GlintColorizerConfig.instance().armorGlint.scale;
                 RenderSystem.setTextureMatrix(new Matrix4f()
-                        .scale(scale, scale, scale)
+                        .scale(scale)
                         .rotateZ((float) Math.toRadians(30.0F - GlintColorizerConfig.instance().armorGlint.strokeOneRotation))
                         .translate(0.0F, getArmorTilt() * 0.001F * 20.0F, 0.0F));
             },
@@ -120,7 +120,7 @@ public class GlintPipeline {
             () -> {
                 final float scale = 0.33333334F * GlintColorizerConfig.instance().armorGlint.scale;
                 RenderSystem.setTextureMatrix(new Matrix4f()
-                        .scale(scale, scale, scale)
+                        .scale(scale)
                         .rotateZ((float) Math.toRadians(30.0F - GlintColorizerConfig.instance().armorGlint.strokeTwoRotation))
                         .translate(0.0F, getArmorTilt() * (0.001F + 0.003F) * 20.0F, 0.0F));
             },
