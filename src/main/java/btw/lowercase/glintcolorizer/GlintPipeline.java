@@ -142,6 +142,7 @@ public class GlintPipeline {
     // Utility
     private static float getArmorTilt() {
         // TODO/NOTE: Tilt is not accurate, looking into finding a good replacement/way to do it
+        // NOTE: Currently, looks fine-ish but noticable reset near end
         return (float) ((Util.getMillis() * GlintColorizerConfig.instance().armorGlint.speed * 8.0) % 300000L) / 3000.0F;
     }
 
