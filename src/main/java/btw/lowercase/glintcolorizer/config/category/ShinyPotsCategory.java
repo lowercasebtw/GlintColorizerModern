@@ -7,7 +7,6 @@ import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.network.chat.Component;
 
 public class ShinyPotsCategory extends BaseGlint {
-    public boolean usePotionGlint = false;
     public boolean fullSlotShine = false;
     public boolean useCustomColor = false;
     public boolean usePotionBasedColor = false;
@@ -21,26 +20,8 @@ public class ShinyPotsCategory extends BaseGlint {
         ShinyPotsCategory shinyPotsDefaults = (ShinyPotsCategory) defaults;
         ShinyPotsCategory shinyPotsConfig = (ShinyPotsCategory) config;
         builder.option(Option.<Boolean>createBuilder()
-                .name(Component.literal("Use Potion Glint"))
-                .description(OptionDescription.of(Component.literal("")))
-                .binding(
-                        shinyPotsDefaults.usePotionGlint,
-                        () -> shinyPotsConfig.usePotionGlint,
-                        (newVal) -> shinyPotsConfig.usePotionGlint = newVal)
-                .controller(TickBoxControllerBuilder::create)
-                .build());
-        builder.option(Option.<Boolean>createBuilder()
-                .name(Component.literal("Use Full Slot Shine"))
-                .description(OptionDescription.of(Component.literal("")))
-                .binding(
-                        shinyPotsDefaults.fullSlotShine,
-                        () -> shinyPotsConfig.fullSlotShine,
-                        (newVal) -> shinyPotsConfig.fullSlotShine = newVal)
-                .controller(TickBoxControllerBuilder::create)
-                .build());
-        builder.option(Option.<Boolean>createBuilder()
                 .name(Component.literal("Use Custom Color"))
-                .description(OptionDescription.of(Component.literal("")))
+                .description(OptionDescription.of(Component.literal("Use a seperate color from everything else.")))
                 .binding(
                         shinyPotsDefaults.useCustomColor,
                         () -> shinyPotsConfig.useCustomColor,
@@ -49,11 +30,20 @@ public class ShinyPotsCategory extends BaseGlint {
                 .build());
         builder.option(Option.<Boolean>createBuilder()
                 .name(Component.literal("Use Potion Color For Glint"))
-                .description(OptionDescription.of(Component.literal("")))
+                .description(OptionDescription.of(Component.literal("Replace glint color with the potion color.")))
                 .binding(
                         shinyPotsDefaults.usePotionBasedColor,
                         () -> shinyPotsConfig.usePotionBasedColor,
                         (newVal) -> shinyPotsConfig.usePotionBasedColor = newVal)
+                .controller(TickBoxControllerBuilder::create)
+                .build());
+        builder.option(Option.<Boolean>createBuilder()
+                .name(Component.literal("Use Full Slot Shine"))
+                .description(OptionDescription.of(Component.literal("Render glint in full slot.")))
+                .binding(
+                        shinyPotsDefaults.fullSlotShine,
+                        () -> shinyPotsConfig.fullSlotShine,
+                        (newVal) -> shinyPotsConfig.fullSlotShine = newVal)
                 .controller(TickBoxControllerBuilder::create)
                 .build());
         super.build(builder, defaults, config);

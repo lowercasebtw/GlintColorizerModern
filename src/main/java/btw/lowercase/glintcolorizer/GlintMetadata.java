@@ -53,11 +53,9 @@ public class GlintMetadata {
         if ((itemStack.is(Items.POTION) || itemStack.is(Items.SPLASH_POTION) || itemStack.is(Items.LINGERING_POTION)) && GlintColorizerConfig.instance().shinyPots.useCustomColor) {
             options = GlintColorizerConfig.instance().shinyPots;
             if (options instanceof ShinyPotsCategory shinyPotsCategory && shinyPotsCategory.usePotionBasedColor && itemStack.has(DataComponents.POTION_CONTENTS)) {
-                Optional<? extends PotionContents> potionContents = Objects.requireNonNull(itemStack.getComponentsPatch().get(DataComponents.POTION_CONTENTS));
-                if (potionContents.isPresent()) {
-                    final int color = potionContents.get().getColor();
-                    return new float[]{ARGB.redFloat(color), ARGB.greenFloat(color), ARGB.blueFloat(color)};
-                }
+                PotionContents potionContents = Objects.requireNonNull(itemStack.getComponents().get(DataComponents.POTION_CONTENTS));
+                final int color = potionContents.getColor();
+                return new float[]{ARGB.redFloat(color), ARGB.greenFloat(color), ARGB.blueFloat(color)};
             }
         }
 
