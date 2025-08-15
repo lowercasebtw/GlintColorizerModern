@@ -55,12 +55,13 @@ public abstract class MixinCompositeRenderType {
 
     @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderPass;setIndexBuffer(Lcom/mojang/blaze3d/buffers/GpuBuffer;Lcom/mojang/blaze3d/vertex/VertexFormat$IndexType;)V", shift = At.Shift.AFTER))
     private void glintcolorizer$applyGlintColor(MeshData meshData, CallbackInfo ci, @Local RenderPass renderPass) {
-        if (GlintColorizerConfig.instance().useCustomRenderer) {
-            if (this.renderPipeline == GlintPipeline.ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE) {
-                renderPass.setUniform("Glint", glintcolorizer$colorGpuBuffer);
-            } else if (this.renderPipeline == GlintPipeline.ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE) {
-                renderPass.setUniform("Glint", glintcolorizer$colorGpuBuffer);
-            }
+        if (GlintColorizerConfig.instance().useCustomRenderer && (this.renderPipeline == GlintPipeline.ITEM_GLINT_1ST_LAYER_PIPELINE ||
+                this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE ||
+                this.renderPipeline == GlintPipeline.ITEM_GLINT_2ND_LAYER_PIPELINE ||
+                this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE ||
+                this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE ||
+                this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE)) {
+            renderPass.setUniform("Glint", glintcolorizer$colorGpuBuffer);
         }
     }
 
