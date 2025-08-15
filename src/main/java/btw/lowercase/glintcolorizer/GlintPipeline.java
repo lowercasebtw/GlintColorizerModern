@@ -29,7 +29,7 @@ public class GlintPipeline {
                     .withBlend(BlendFunction.GLINT)
                     .withDepthTestFunction(DepthTestFunction.EQUAL_DEPTH_TEST)
                     .withSampler("Sampler0")
-                    .withUniform("GlintColor", UniformType.UNIFORM_BUFFER)
+                    .withUniform("Glint", UniformType.UNIFORM_BUFFER)
                     .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
                     .buildSnippet();
 
