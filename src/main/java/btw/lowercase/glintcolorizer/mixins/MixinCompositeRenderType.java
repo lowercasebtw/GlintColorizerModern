@@ -7,11 +7,9 @@ import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.systems.CommandEncoder;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.MeshData;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.renderer.RenderType;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
@@ -32,48 +30,37 @@ public abstract class MixinCompositeRenderType {
     private RenderPipeline renderPipeline;
 
     @Unique
-    private static GpuBuffer glintcolorizer$first = null;
+    private static GpuBuffer glintcolorizer$colorGpuBuffer = null;
 
-    @Unique
-    private static GpuBuffer glintcolorizer$second = null;
-
-
-    @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderPass;setIndexBuffer(Lcom/mojang/blaze3d/buffers/GpuBuffer;Lcom/mojang/blaze3d/vertex/VertexFormat$IndexType;)V", shift = At.Shift.AFTER))
-    private void glintcolorizer$applyGlintColor(MeshData meshData, CallbackInfo ci, @Local RenderPass renderPass) {
+    @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;setupRenderState()V", shift = At.Shift.AFTER))
+    private void glintcolorizer$updateGlintColor(MeshData meshData, CallbackInfo ci) {
         if (GlintColorizerConfig.instance().useCustomRenderer) {
             final boolean isArmor = this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE;
+            ByteBuffer byteBuffer;
             if (this.renderPipeline == GlintPipeline.ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE) {
-                final float[] color = GlintMetadata.getGlintColor(GlintLayer.FIRST, isArmor);
-                if (glintcolorizer$first == null) {
-                    glintcolorizer$first = RenderSystem.getDevice().createBuffer(() -> "Float Vector #0", GpuBuffer.USAGE_UNIFORM, glintcolorizer$bufferFromFloatArray(color));
-                } else {
-                    RenderSystem.getDevice().createCommandEncoder().writeToBuffer(glintcolorizer$first.slice(), glintcolorizer$bufferFromFloatArray(color));
-                }
-
-                GlintMetadata.getGlintColor(GlintLayer.FIRST, isArmor);
-
-                renderPass.setUniform("Glint", glintcolorizer$first);
+                byteBuffer = glintcolorizer$bufferFromFloatArray(GlintMetadata.getGlintColor(GlintLayer.FIRST, isArmor));
             } else if (this.renderPipeline == GlintPipeline.ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE) {
-                final float[] color = GlintMetadata.getGlintColor(GlintLayer.SECOND, isArmor);
-                if (glintcolorizer$second == null) {
-                    glintcolorizer$second = RenderSystem.getDevice().createBuffer(() -> "Float Vector #1", GpuBuffer.USAGE_UNIFORM, glintcolorizer$bufferFromFloatArray(color));
-                } else {
-                    RenderSystem.getDevice().createCommandEncoder().writeToBuffer(glintcolorizer$second.slice(), glintcolorizer$bufferFromFloatArray(color));
-                }
+                byteBuffer = glintcolorizer$bufferFromFloatArray(GlintMetadata.getGlintColor(GlintLayer.SECOND, isArmor));
+            } else {
+                byteBuffer = glintcolorizer$bufferFromFloatArray(new float[]{0.0F, 0.0F, 0.0F});
+            }
 
-                renderPass.setUniform("Glint", glintcolorizer$second);
+            if (glintcolorizer$colorGpuBuffer == null) {
+                glintcolorizer$colorGpuBuffer = RenderSystem.getDevice().createBuffer(() -> "Glint Color UBO", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_COPY_DST, byteBuffer);
+            } else {
+                RenderSystem.getDevice().createCommandEncoder().writeToBuffer(glintcolorizer$colorGpuBuffer.slice(), byteBuffer);
             }
         }
     }
 
-    @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;clearRenderState()V", shift = At.Shift.BEFORE))
-    private void glintcolorizer$clearBuffers(MeshData meshData, CallbackInfo ci) {
-        if (glintcolorizer$first != null) {
-            glintcolorizer$first.close();
-        }
-
-        if (glintcolorizer$second != null) {
-            glintcolorizer$second.close();
+    @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderPass;setIndexBuffer(Lcom/mojang/blaze3d/buffers/GpuBuffer;Lcom/mojang/blaze3d/vertex/VertexFormat$IndexType;)V", shift = At.Shift.AFTER))
+    private void glintcolorizer$applyGlintColor(MeshData meshData, CallbackInfo ci, @Local RenderPass renderPass) {
+        if (GlintColorizerConfig.instance().useCustomRenderer) {
+            if (this.renderPipeline == GlintPipeline.ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE) {
+                renderPass.setUniform("Glint", glintcolorizer$colorGpuBuffer);
+            } else if (this.renderPipeline == GlintPipeline.ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE) {
+                renderPass.setUniform("Glint", glintcolorizer$colorGpuBuffer);
+            }
         }
     }
 
