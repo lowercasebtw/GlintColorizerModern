@@ -3,6 +3,8 @@ package btw.lowercase.glintcolorizer.mixins;
 import btw.lowercase.glintcolorizer.GlintMetadata;
 import btw.lowercase.glintcolorizer.GlintPipeline;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
@@ -39,7 +41,7 @@ public abstract class MixinItemRenderer {
         if (GlintColorizerConfig.instance().useCustomRenderer && hasFoil) {
             final VertexConsumer itemVertexConsumer = multiBufferSource.getBuffer(itemRenderType);
             if (GlintMetadata.getRenderingOptions().enabled) {
-                boolean shiny = GlintMetadata.getItemStack().getItem() instanceof PotionItem && GlintColorizerConfig.instance().shinyPots.fullSlotShine && GlintMetadata.getRenderMode() == GlintMetadata.RenderMode.GUI;
+                final boolean shiny = GlintMetadata.getItemStack().getItem() instanceof PotionItem && GlintColorizerConfig.instance().shinyPots.fullSlotShine && GlintMetadata.getRenderMode() == GlintMetadata.RenderMode.GUI;
                 VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(shiny ? GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_RENDERTYPE : GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE);
                 VertexConsumer secondGlintLayerVertexConsumer = multiBufferSource.getBuffer(shiny ? GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_RENDERTYPE : GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE);
                 cir.setReturnValue(VertexMultiConsumer.create(firstGlintLayerVertexConsumer, VertexMultiConsumer.create(secondGlintLayerVertexConsumer, itemVertexConsumer)));
@@ -60,6 +62,17 @@ public abstract class MixinItemRenderer {
             } else {
                 cir.setReturnValue(armorVertexConsumer);
             }
+        }
+    }
+
+    @WrapOperation(method = "getCompassFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
+    private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass(MultiBufferSource multiBufferSource, RenderType renderType, Operation<VertexConsumer> original) {
+        if (GlintColorizerConfig.instance().useCustomRenderer) {
+            VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE);
+            VertexConsumer secondGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE);
+            return VertexMultiConsumer.create(firstGlintLayerVertexConsumer, secondGlintLayerVertexConsumer);
+        } else {
+            return original.call(multiBufferSource, renderType);
         }
     }
 }
