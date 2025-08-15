@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.TriState;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
@@ -24,13 +23,13 @@ public class GlintPipeline {
     public static final ResourceLocation GLINT_TEXTURE_PATH = ResourceLocation.fromNamespaceAndPath(GlintColorizer.MOD_ID, "textures/misc/enchanted_item_glint.png");
 
     private static final RenderPipeline.Snippet GLINT_PIPELINE_SNIPPET =
-            RenderPipeline.builder(RenderPipelinesAccessor.getMatricesColorFogSnippet())
+            RenderPipeline.builder(RenderPipelinesAccessor.getMatricesProjectionSnippet())
                     .withVertexShader(GlintColorizer.id("core/glint"))
                     .withFragmentShader(GlintColorizer.id("core/glint"))
                     .withBlend(BlendFunction.GLINT)
                     .withDepthTestFunction(DepthTestFunction.EQUAL_DEPTH_TEST)
                     .withSampler("Sampler0")
-                    .withUniform("GlintColor", UniformType.VEC3)
+                    .withUniform("GlintColor", UniformType.UNIFORM_BUFFER)
                     .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
                     .buildSnippet();
 
@@ -89,7 +88,7 @@ public class GlintPipeline {
 
     private static RenderType makeItemGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer, boolean shiny) {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
-        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, TriState.DEFAULT, false));
+        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, false));
         compositeStateBuilder.withTexturingState(texturingStateShard);
         return RenderTypeAccessor.createRenderType(
                 (shiny ? "shiny_" : "") + "item_glint_layer_" + (layer.ordinal() + 1),
@@ -156,7 +155,7 @@ public class GlintPipeline {
 
     private static RenderType makeArmorGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer) {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
-        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, TriState.DEFAULT, false));
+        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, false));
         compositeStateBuilder.withTexturingState(texturingStateShard);
         compositeStateBuilder.withLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING);
         return RenderTypeAccessor.createRenderType(

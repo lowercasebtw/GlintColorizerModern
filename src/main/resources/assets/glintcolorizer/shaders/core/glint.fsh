@@ -1,15 +1,16 @@
 #version 150
 
 #moj_import <minecraft:fog.glsl>
+#moj_import <minecraft:dynamictransforms.glsl>
+
+layout(std140) uniform Glint {
+    vec3 GlintColor;
+};
 
 uniform sampler2D Sampler0;
 
-uniform vec4 ColorModulator;
-uniform float FogStart;
-uniform float FogEnd;
-uniform vec3 GlintColor;
-
-in float vertexDistance;
+in float sphericalVertexDistance;
+in float cylindricalVertexDistance;
 in vec2 texCoord0;
 
 out vec4 fragColor;
@@ -20,6 +21,6 @@ void main() {
         discard;
     }
 
-    float fade = linear_fog_fade(vertexDistance, FogStart, FogEnd);
+    float fade = (1.0F - total_fog_value(sphericalVertexDistance, cylindricalVertexDistance, FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd));
     fragColor = vec4((color.rgb * GlintColor.rgb) * fade, color.a);
 }

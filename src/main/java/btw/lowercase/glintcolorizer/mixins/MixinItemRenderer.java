@@ -65,7 +65,7 @@ public abstract class MixinItemRenderer {
         }
     }
 
-    @WrapOperation(method = "getCompassFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
+    @WrapOperation(method = "getSpecialFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
     private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass(MultiBufferSource multiBufferSource, RenderType renderType, Operation<VertexConsumer> original) {
         if (GlintColorizerConfig.instance().useCustomRenderer) {
             VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE);
