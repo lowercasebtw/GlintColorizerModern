@@ -75,4 +75,13 @@ public abstract class MixinItemRenderer {
             return original.call(multiBufferSource, renderType);
         }
     }
+
+    @WrapOperation(method = "getCompassFoilBuffer", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexMultiConsumer;create(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lcom/mojang/blaze3d/vertex/VertexConsumer;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
+    private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass$enabled(VertexConsumer glintVertexConsumer, VertexConsumer itemVertexConsumer, Operation<VertexConsumer> original) {
+        if (GlintColorizerConfig.instance().useCustomRenderer && !GlintMetadata.getRenderingOptions().enabled) {
+            return itemVertexConsumer;
+        } else {
+            return original.call(glintVertexConsumer, itemVertexConsumer);
+        }
+    }
 }
