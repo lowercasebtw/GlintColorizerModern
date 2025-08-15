@@ -12,7 +12,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -47,44 +46,72 @@ public class GlintPipeline {
                     .withLocation(GlintColorizer.id("pipeline/item_glint_layer_1"))
                     .build());
 
+    public static final RenderPipeline SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE = RenderPipelines.register(
+            RenderPipeline.builder(ITEM_GLINT_PIPELINE_SNIPPET)
+                    .withLocation(GlintColorizer.id("pipeline/shiny_item_glint_layer_1"))
+                    .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
+                    .build());
+
     public static final RenderPipeline ITEM_GLINT_2ND_LAYER_PIPELINE = RenderPipelines.register(
             RenderPipeline.builder(ITEM_GLINT_PIPELINE_SNIPPET)
                     .withLocation(GlintColorizer.id("pipeline/item_glint_layer_2"))
                     .build());
 
+    public static final RenderPipeline SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE = RenderPipelines.register(
+            RenderPipeline.builder(ITEM_GLINT_PIPELINE_SNIPPET)
+                    .withLocation(GlintColorizer.id("pipeline/shiny_item_glint_layer_2"))
+                    .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
+                    .build());
+
     public static final RenderType ITEM_GLINT_1ST_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
             "item_glint_layer_1_texturing",
-            () -> {
-                final float tilt = (getSystemTime() % 3000L) / 3000.0F / 8.0F;
-                RenderSystem.setTextureMatrix(new Matrix4f()
-                        .scale(8.0F * GlintMetadata.getRenderingOptions().scale)
-                        .translate(tilt * GlintMetadata.getRenderingOptions().speed, 0.0F, 0.0F)
-                        .rotateZ((float) Math.toRadians(GlintMetadata.getRenderingOptions().strokeOneRotation)));
-            },
+            GlintPipeline::updateGlintLayer1Texturing,
             RenderSystem::resetTextureMatrix
-    ), GlintLayer.FIRST);
+    ), GlintLayer.FIRST, false);
+
+    public static final RenderType SHINY_ITEM_GLINT_1ST_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
+            "shiny_item_glint_layer_1_texturing",
+            GlintPipeline::updateGlintLayer1Texturing,
+            RenderSystem::resetTextureMatrix
+    ), GlintLayer.FIRST, true);
 
     public static final RenderType ITEM_GLINT_2ND_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
             "item_glint_layer_2_texturing",
-            () -> {
-                final float tilt = (getSystemTime() % 4873L) / 4873.0F / 8.0F;
-                RenderSystem.setTextureMatrix(new Matrix4f()
-                        .scale(8.0F * GlintMetadata.getRenderingOptions().scale)
-                        .translate(-tilt * GlintMetadata.getRenderingOptions().speed, 0.0F, 0.0F)
-                        .rotateZ((float) Math.toRadians(GlintMetadata.getRenderingOptions().strokeTwoRotation)));
-            },
+            GlintPipeline::updateGlintLayer2Texturing,
             RenderSystem::resetTextureMatrix
-    ), GlintLayer.SECOND);
+    ), GlintLayer.SECOND, false);
 
-    private static RenderType makeItemGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer) {
+    public static final RenderType SHINY_ITEM_GLINT_2ND_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
+            "shiny_item_glint_layer_2_texturing",
+            GlintPipeline::updateGlintLayer2Texturing,
+            RenderSystem::resetTextureMatrix
+    ), GlintLayer.SECOND, true);
+
+    private static RenderType makeItemGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer, boolean shiny) {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
         compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, TriState.DEFAULT, false));
         compositeStateBuilder.withTexturingState(texturingStateShard);
         return RenderTypeAccessor.createRenderType(
-                "item_glint_layer_" + (layer.ordinal() + 1),
+                (shiny ? "shiny_" : "") + "item_glint_layer_" + (layer.ordinal() + 1),
                 1536,
-                layer == GlintLayer.FIRST ? ITEM_GLINT_1ST_LAYER_PIPELINE : ITEM_GLINT_2ND_LAYER_PIPELINE,
+                layer == GlintLayer.FIRST ? (shiny ? SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE : ITEM_GLINT_1ST_LAYER_PIPELINE) : (shiny ? SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE : ITEM_GLINT_2ND_LAYER_PIPELINE),
                 compositeStateBuilder.buildCompositeState(false));
+    }
+
+    private static void updateGlintLayer1Texturing() {
+        final float tilt = (getSystemTime() % 3000L) / 3000.0F / 8.0F;
+        RenderSystem.setTextureMatrix(new Matrix4f()
+                .scale(8.0F * GlintMetadata.getRenderingOptions().scale)
+                .translate(tilt * GlintMetadata.getRenderingOptions().speed, 0.0F, 0.0F)
+                .rotateZ((float) Math.toRadians(GlintMetadata.getRenderingOptions().strokeOneRotation)));
+    }
+
+    private static void updateGlintLayer2Texturing() {
+        final float tilt = (getSystemTime() % 4873L) / 4873.0F / 8.0F;
+        RenderSystem.setTextureMatrix(new Matrix4f()
+                .scale(8.0F * GlintMetadata.getRenderingOptions().scale)
+                .translate(-tilt * GlintMetadata.getRenderingOptions().speed, 0.0F, 0.0F)
+                .rotateZ((float) Math.toRadians(GlintMetadata.getRenderingOptions().strokeTwoRotation)));
     }
 
     // Armor

@@ -6,12 +6,10 @@ import btw.lowercase.glintcolorizer.config.category.ShinyPotsCategory;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class GlintMetadata {
     public enum RenderMode {
@@ -32,10 +30,18 @@ public class GlintMetadata {
         }
     }
 
+    public static RenderMode getRenderMode() {
+        return GlintMetadata.renderMode;
+    }
+
     public static void setItemStack(ItemStack itemStack) {
         if (!ItemStack.matches(itemStack, GlintMetadata.itemStack)) {
             GlintMetadata.itemStack = itemStack;
         }
+    }
+
+    public static ItemStack getItemStack() {
+        return GlintMetadata.itemStack;
     }
 
     public static BaseGlint getRenderingOptions() {
@@ -50,7 +56,7 @@ public class GlintMetadata {
 
     public static float[] getGlintColor(GlintLayer layer, boolean isArmor) {
         BaseGlint options = isArmor ? GlintColorizerConfig.instance().armorGlint : getRenderingOptions();
-        if ((itemStack.is(Items.POTION) || itemStack.is(Items.SPLASH_POTION) || itemStack.is(Items.LINGERING_POTION)) && GlintColorizerConfig.instance().shinyPots.useCustomColor) {
+        if (itemStack.getItem() instanceof PotionItem && GlintColorizerConfig.instance().shinyPots.useCustomColor) {
             options = GlintColorizerConfig.instance().shinyPots;
             if (options instanceof ShinyPotsCategory shinyPotsCategory && shinyPotsCategory.usePotionBasedColor && itemStack.has(DataComponents.POTION_CONTENTS)) {
                 PotionContents potionContents = Objects.requireNonNull(itemStack.getComponents().get(DataComponents.POTION_CONTENTS));

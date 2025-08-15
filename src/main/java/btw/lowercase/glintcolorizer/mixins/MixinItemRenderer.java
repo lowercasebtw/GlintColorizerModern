@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.PotionItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,8 +39,9 @@ public abstract class MixinItemRenderer {
         if (GlintColorizerConfig.instance().useCustomRenderer && hasFoil) {
             final VertexConsumer itemVertexConsumer = multiBufferSource.getBuffer(itemRenderType);
             if (GlintMetadata.getRenderingOptions().enabled) {
-                VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE);
-                VertexConsumer secondGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE);
+                boolean shiny = GlintMetadata.getItemStack().getItem() instanceof PotionItem && GlintColorizerConfig.instance().shinyPots.fullSlotShine && GlintMetadata.getRenderMode() == GlintMetadata.RenderMode.GUI;
+                VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(shiny ? GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_RENDERTYPE : GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE);
+                VertexConsumer secondGlintLayerVertexConsumer = multiBufferSource.getBuffer(shiny ? GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_RENDERTYPE : GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE);
                 cir.setReturnValue(VertexMultiConsumer.create(firstGlintLayerVertexConsumer, VertexMultiConsumer.create(secondGlintLayerVertexConsumer, itemVertexConsumer)));
             } else {
                 cir.setReturnValue(itemVertexConsumer);
