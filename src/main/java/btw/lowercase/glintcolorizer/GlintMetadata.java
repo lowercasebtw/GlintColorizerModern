@@ -4,12 +4,12 @@ import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import btw.lowercase.glintcolorizer.config.category.BaseGlint;
 import btw.lowercase.glintcolorizer.config.category.ShinyPotsCategory;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.PotionContents;
 import org.joml.Vector3f;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class GlintMetadata {
@@ -61,7 +61,7 @@ public class GlintMetadata {
             options = GlintColorizerConfig.instance().shinyPots;
             if (options instanceof ShinyPotsCategory shinyPotsCategory && shinyPotsCategory.usePotionBasedColor && itemStack.has(DataComponents.POTION_CONTENTS)) {
                 PotionContents potionContents = Objects.requireNonNull(itemStack.getComponents().get(DataComponents.POTION_CONTENTS));
-                return ARGB.vector3fFromRGB24(potionContents.getColor());
+                return new Vector3f(new Color(potionContents.getColor(), true).getColorComponents(null));
             }
         }
 

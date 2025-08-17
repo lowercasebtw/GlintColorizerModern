@@ -7,22 +7,21 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.TriState;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.IOException;
+
 public class GlintPipeline {
-    public static final ResourceLocation GLINT_TEXTURE_PATH = ResourceLocation.fromNamespaceAndPath(GlintColorizer.MOD_ID, "textures/misc/enchanted_item_glint.png");
-
-    public static final ShaderProgram GLINT_SHADER = new ShaderProgram(
-            GlintColorizer.id("core/glint"),
-            DefaultVertexFormat.POSITION_TEX,
-            ShaderDefines.EMPTY
-    );
-
-    public static final RenderStateShard.ShaderStateShard GLINT_SHADER_SHARD = new RenderStateShard.ShaderStateShard(GLINT_SHADER);
+    public static final ResourceLocation GLINT_TEXTURE_PATH = GlintColorizer.id("textures/misc/enchanted_item_glint.png");
+    //    public static final ShaderInstance GLINT_SHADER = createShader(GlintColorizer.id("glint"), DefaultVertexFormat.POSITION_TEX);
+    public static final RenderStateShard.ShaderStateShard GLINT_SHADER_SHARD = new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexShader);
 
     // Item
     public static final RenderType ITEM_GLINT_1ST_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
@@ -52,11 +51,12 @@ public class GlintPipeline {
     private static RenderType makeItemGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer, boolean shiny) {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
         compositeStateBuilder.withShaderState(GLINT_SHADER_SHARD);
-        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, TriState.DEFAULT, false));
-        compositeStateBuilder.withTexturingState(texturingStateShard);
-        compositeStateBuilder.withDepthTestState(shiny ? RenderType.NO_DEPTH_TEST : RenderType.EQUAL_DEPTH_TEST);
+        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, true, false));
         compositeStateBuilder.withWriteMaskState(RenderType.COLOR_WRITE);
         compositeStateBuilder.withCullState(RenderType.CULL);
+        compositeStateBuilder.withDepthTestState(shiny ? RenderType.NO_DEPTH_TEST : RenderType.EQUAL_DEPTH_TEST);
+        compositeStateBuilder.withBlendState(RenderType.GLINT_TRANSPARENCY);
+        compositeStateBuilder.withTexturingState(texturingStateShard);
         return RenderTypeAccessor.createRenderType(
                 (shiny ? "shiny_" : "") + "item_glint_layer_" + (layer.ordinal() + 1),
                 DefaultVertexFormat.POSITION_TEX,
@@ -109,12 +109,13 @@ public class GlintPipeline {
     private static RenderType makeArmorGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer) {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
         compositeStateBuilder.withShaderState(GLINT_SHADER_SHARD);
-        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, TriState.DEFAULT, false));
-        compositeStateBuilder.withTexturingState(texturingStateShard);
-        compositeStateBuilder.withLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING);
-        compositeStateBuilder.withDepthTestState(RenderType.EQUAL_DEPTH_TEST);
+        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH, true, false));
         compositeStateBuilder.withWriteMaskState(RenderType.COLOR_WRITE);
         compositeStateBuilder.withCullState(RenderType.NO_CULL);
+        compositeStateBuilder.withDepthTestState(RenderType.EQUAL_DEPTH_TEST);
+        compositeStateBuilder.withBlendState(RenderType.GLINT_TRANSPARENCY);
+        compositeStateBuilder.withTexturingState(texturingStateShard);
+        compositeStateBuilder.withLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING);
         return RenderTypeAccessor.createRenderType(
                 "armor_glint_layer_" + (layer.ordinal() + 1),
                 DefaultVertexFormat.POSITION_TEX,
@@ -132,7 +133,12 @@ public class GlintPipeline {
         return (float) (GLFW.glfwGetTime() * 1000.0F);
     }
 
-    static {
-        CoreShaders.getProgramsToPreload().add(GLINT_SHADER);
+    private static ShaderInstance createShader(ResourceLocation resourceLocation, VertexFormat vertexFormat) {
+        try (ShaderInstance shaderInstance = new ShaderInstance(Minecraft.getInstance().getResourceManager(), resourceLocation.toString(), vertexFormat)) {
+            return shaderInstance;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create glint shader.");
+        }
     }
 }

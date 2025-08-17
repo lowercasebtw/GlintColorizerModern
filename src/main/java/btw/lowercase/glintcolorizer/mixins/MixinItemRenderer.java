@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemRenderer.class)
 public abstract class MixinItemRenderer {
-    @Inject(method = "renderItem", at = @At("HEAD"))
-    private static void glintcolorizer$storeDisplayType(ItemStack itemStack, ItemDisplayContext itemDisplayContext, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, boolean bl, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("HEAD"))
+    private static void glintcolorizer$storeDisplayType(ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, CallbackInfo ci) {
         GlintMetadata.setItemStack(itemStack);
         GlintMetadata.setRenderMode(switch (itemDisplayContext) {
             case FIRST_PERSON_RIGHT_HAND, THIRD_PERSON_RIGHT_HAND, FIRST_PERSON_LEFT_HAND, THIRD_PERSON_LEFT_HAND ->
