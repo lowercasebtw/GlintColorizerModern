@@ -14,7 +14,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class GlintPipeline {
-    public static final ResourceLocation GLINT_TEXTURE_PATH = ResourceLocation.fromNamespaceAndPath(GlintColorizer.MOD_ID, "textures/misc/enchanted_item_glint.png");
+    public static final ResourceLocation GLINT_TEXTURE_PATH = GlintColorizer.id("textures/misc/enchanted_item_glint.png");
 
     public static final ShaderProgram GLINT_SHADER = new ShaderProgram(
             GlintColorizer.id("core/glint"),
@@ -57,6 +57,7 @@ public class GlintPipeline {
         compositeStateBuilder.withDepthTestState(shiny ? RenderType.NO_DEPTH_TEST : RenderType.EQUAL_DEPTH_TEST);
         compositeStateBuilder.withWriteMaskState(RenderType.COLOR_WRITE);
         compositeStateBuilder.withCullState(RenderType.CULL);
+        compositeStateBuilder.withBlendState(RenderType.GLINT_TRANSPARENCY);
         return RenderTypeAccessor.createRenderType(
                 (shiny ? "shiny_" : "") + "item_glint_layer_" + (layer.ordinal() + 1),
                 DefaultVertexFormat.POSITION_TEX,
@@ -115,6 +116,7 @@ public class GlintPipeline {
         compositeStateBuilder.withDepthTestState(RenderType.EQUAL_DEPTH_TEST);
         compositeStateBuilder.withWriteMaskState(RenderType.COLOR_WRITE);
         compositeStateBuilder.withCullState(RenderType.NO_CULL);
+        compositeStateBuilder.withBlendState(RenderType.GLINT_TRANSPARENCY);
         return RenderTypeAccessor.createRenderType(
                 "armor_glint_layer_" + (layer.ordinal() + 1),
                 DefaultVertexFormat.POSITION_TEX,
