@@ -13,7 +13,6 @@ import net.minecraft.util.TriState;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
-// TODO: BlendFunction.GLINT
 public class GlintPipeline {
     public static final ResourceLocation GLINT_TEXTURE_PATH = ResourceLocation.fromNamespaceAndPath(GlintColorizer.MOD_ID, "textures/misc/enchanted_item_glint.png");
 
