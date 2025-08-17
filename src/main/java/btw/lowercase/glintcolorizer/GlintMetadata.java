@@ -65,14 +65,6 @@ public class GlintMetadata {
             }
         }
 
-        if (options.individualStrokes) {
-            if (layer == GlintLayer.FIRST) {
-                return options.strokeOneColor.getRGBColorComponents(null);
-            } else {
-                return options.strokeTwoColor.getRGBColorComponents(null);
-            }
-        }
-
-        return options.color.getRGBColorComponents(null);
+        return (options.individualStrokes ? (layer == GlintLayer.FIRST ? options.strokeOneColor : options.strokeTwoColor) : options.color).getRGBColorComponents(null);
     }
 }

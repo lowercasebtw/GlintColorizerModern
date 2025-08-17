@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemModelResolver.class)
 public abstract class MixinItemModelResolver {
     @Inject(method = "updateForTopItem", at = @At("HEAD"))
-    private void glintcolorizer$storeItemStack(ItemStackRenderState itemStackRenderState, ItemStack itemStack, ItemDisplayContext itemDisplayContext, Level level, LivingEntity livingEntity, int i, CallbackInfo ci) {
+    private void glintcolorizer$storeItemStack(ItemStackRenderState itemStackRenderState, ItemStack itemStack, ItemDisplayContext itemDisplayContext, boolean bl, Level level, LivingEntity livingEntity, int i, CallbackInfo ci) {
         GlintMetadata.setItemStack(itemStack);
     }
 }
