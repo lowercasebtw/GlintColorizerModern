@@ -55,18 +55,16 @@ public class GlintMetadata {
         };
     }
 
-    public static float[] getGlintColor(GlintLayer layer, boolean isArmor) {
+    public static Vector3f getGlintColor(GlintLayer layer, boolean isArmor) {
         BaseGlint options = isArmor ? GlintColorizerConfig.instance().armorGlint : getRenderingOptions();
-        if (itemStack.getItem() instanceof PotionItem && GlintColorizerConfig.instance().shinyPots.useCustomColor) {
+        if (GlintColorizerConfig.instance().shinyPots.useCustomColor && itemStack.getItem() instanceof PotionItem) {
             options = GlintColorizerConfig.instance().shinyPots;
             if (options instanceof ShinyPotsCategory shinyPotsCategory && shinyPotsCategory.usePotionBasedColor && itemStack.has(DataComponents.POTION_CONTENTS)) {
                 PotionContents potionContents = Objects.requireNonNull(itemStack.getComponents().get(DataComponents.POTION_CONTENTS));
-                final int color = potionContents.getColor();
-                final Vector3f vector3f = ARGB.vector3fFromRGB24(color);
-                return new float[]{vector3f.x, vector3f.y, vector3f.z};
+                return ARGB.vector3fFromRGB24(potionContents.getColor());
             }
         }
 
-        return (options.individualStrokes ? (layer == GlintLayer.FIRST ? options.strokeOneColor : options.strokeTwoColor) : options.color).getRGBColorComponents(null);
+        return new Vector3f((options.individualStrokes ? (layer == GlintLayer.FIRST ? options.strokeOneColor : options.strokeTwoColor) : options.color).getRGBColorComponents(null));
     }
 }
