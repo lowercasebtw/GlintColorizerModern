@@ -4,7 +4,6 @@ import btw.lowercase.glintcolorizer.GlintLayer;
 import btw.lowercase.glintcolorizer.GlintMetadata;
 import btw.lowercase.glintcolorizer.GlintPipeline;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.MeshData;
 import net.minecraft.client.renderer.CompiledShaderProgram;
@@ -28,8 +27,6 @@ public abstract class MixinRenderType {
                 final boolean isArmor = renderType == GlintPipeline.ARMOR_GLINT_1ST_LAYER_RENDERTYPE || renderType == GlintPipeline.ARMOR_GLINT_2ND_LAYER_RENDERTYPE;
                 final CompiledShaderProgram shaderProgram = Objects.requireNonNull(RenderSystem.getShader());
                 Objects.requireNonNull(shaderProgram.getUniform("GlintColor")).set(GlintMetadata.getGlintColor(isFirstLayer ? GlintLayer.FIRST : GlintLayer.SECOND, isArmor));
-                RenderSystem.enableBlend();
-                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_COLOR, GlStateManager.DestFactor.ONE);
             }
         }
     }

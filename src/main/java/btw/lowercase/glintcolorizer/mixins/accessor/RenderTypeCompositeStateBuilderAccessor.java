@@ -16,6 +16,9 @@ public interface RenderTypeCompositeStateBuilderAccessor {
     @Invoker("setDepthTestState")
     RenderType.CompositeState.CompositeStateBuilder withDepthTestState(RenderStateShard.DepthTestStateShard depthTestStateShard);
 
+    @Invoker("setTransparencyState")
+    RenderType.CompositeState.CompositeStateBuilder withBlendState(RenderStateShard.TransparencyStateShard transparencyStateShard);
+
     @Invoker("setCullState")
     RenderType.CompositeState.CompositeStateBuilder withCullState(RenderStateShard.CullStateShard cullStateShard);
 
