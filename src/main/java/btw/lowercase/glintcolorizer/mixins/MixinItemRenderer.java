@@ -11,9 +11,9 @@ import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +24,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemRenderer.class)
 public abstract class MixinItemRenderer {
     @Inject(method = "renderItem", at = @At("HEAD"))
-    private static void glintcolorizer$storeDisplayType(ItemDisplayContext itemDisplayContext, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, int[] is, BakedModel bakedModel, RenderType renderType, ItemStackRenderState.FoilType foilType, CallbackInfo ci) {
+    private static void glintcolorizer$storeDisplayType(ItemStack itemStack, ItemDisplayContext itemDisplayContext, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel, boolean bl, CallbackInfo ci) {
+        GlintMetadata.setItemStack(itemStack);
         GlintMetadata.setRenderMode(switch (itemDisplayContext) {
             case FIRST_PERSON_RIGHT_HAND, THIRD_PERSON_RIGHT_HAND, FIRST_PERSON_LEFT_HAND, THIRD_PERSON_LEFT_HAND ->
                     GlintMetadata.RenderMode.HELD;
