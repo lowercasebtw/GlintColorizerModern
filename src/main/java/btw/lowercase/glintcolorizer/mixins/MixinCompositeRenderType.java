@@ -35,12 +35,12 @@ public abstract class MixinCompositeRenderType {
     @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;setupRenderState()V", shift = At.Shift.AFTER))
     private void glintcolorizer$updateGlintColor(MeshData meshData, CallbackInfo ci) {
         if (GlintColorizerConfig.instance().useCustomRenderer) {
-            final boolean isArmor = this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE;
             ByteBuffer byteBuffer;
-            if (this.renderPipeline == GlintPipeline.ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE) {
-                byteBuffer = glintcolorizer$bufferFromFloatArray(GlintMetadata.getGlintColor(GlintLayer.FIRST, isArmor));
-            } else if (this.renderPipeline == GlintPipeline.ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE) {
-                byteBuffer = glintcolorizer$bufferFromFloatArray(GlintMetadata.getGlintColor(GlintLayer.SECOND, isArmor));
+            final boolean isFirstLayer = this.renderPipeline == GlintPipeline.ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE;
+            final boolean isSecondLayer = this.renderPipeline == GlintPipeline.ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE;
+            if (isFirstLayer || isSecondLayer) {
+                final boolean isArmor = this.renderPipeline == GlintPipeline.ARMOR_GLINT_1ST_LAYER_PIPELINE || this.renderPipeline == GlintPipeline.ARMOR_GLINT_2ND_LAYER_PIPELINE;
+                byteBuffer = glintcolorizer$bufferFromFloatArray(GlintMetadata.getGlintColor(isFirstLayer ? GlintLayer.FIRST : GlintLayer.SECOND, isArmor));
             } else {
                 byteBuffer = glintcolorizer$bufferFromFloatArray(new float[]{0.0F, 0.0F, 0.0F});
             }

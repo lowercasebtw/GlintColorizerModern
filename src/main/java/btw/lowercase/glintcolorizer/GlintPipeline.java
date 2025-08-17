@@ -117,6 +117,7 @@ public class GlintPipeline {
     private static final RenderPipeline.Snippet ARMOR_GLINT_PIPELINE_SNIPPET =
             RenderPipeline.builder(GLINT_PIPELINE_SNIPPET)
                     .withDepthWrite(false)
+                    .withCull(false)
                     .buildSnippet();
 
     public static final RenderPipeline ARMOR_GLINT_1ST_LAYER_PIPELINE = RenderPipelines.register(
