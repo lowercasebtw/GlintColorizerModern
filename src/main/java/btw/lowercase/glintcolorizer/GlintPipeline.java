@@ -21,7 +21,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class GlintPipeline {
-    public static final ResourceLocation GLINT_TEXTURE_PATH = ResourceLocation.fromNamespaceAndPath(GlintColorizer.MOD_ID, "textures/misc/enchanted_item_glint.png");
+    public static final ResourceLocation GLINT_TEXTURE_PATH = GlintColorizer.id("textures/misc/enchanted_item_glint.png");
 
     private static final RenderPipeline.Snippet GLINT_PIPELINE_SNIPPET =
             RenderPipeline.builder(RenderPipelinesAccessor.getMatricesColorFogSnippet())
