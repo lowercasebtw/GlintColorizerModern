@@ -3,6 +3,14 @@
 	"package": "btw.lowercase.glintcolorizer.mixins",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
+		"MixinCompositeRenderType",
+		"MixinItem",
+		"MixinItemModelResolver",
+		"MixinItemRenderer",
+		"MixinRenderBuffers",
+		"accessor.RenderPipelinesAccessor",
+		"accessor.RenderTypeAccessor",
+		"accessor.RenderTypeCompositeStateBuilderAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

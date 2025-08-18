@@ -25,21 +25,16 @@ public class GlintPipeline {
 
     private static final RenderPipeline.Snippet GLINT_PIPELINE_SNIPPET =
             RenderPipeline.builder(RenderPipelinesAccessor.getMatricesColorFogSnippet())
-                    //? if >=1.21.6 {
-                    /*.withVertexShader(GlintColorizer.id("core/glint-216"))
-                    .withFragmentShader(GlintColorizer.id("core/glint-216"))*/
-                    //? } else {
-                    .withVertexShader(GlintColorizer.id("core/glint-old"))
-                    .withFragmentShader(GlintColorizer.id("core/glint-old"))
-                    //? }
+                    .withVertexShader(GlintColorizer.id("core/glint"))
+                    .withFragmentShader(GlintColorizer.id("core/glint"))
                     .withBlend(BlendFunction.GLINT)
                     .withDepthTestFunction(DepthTestFunction.EQUAL_DEPTH_TEST)
                     .withSampler("Sampler0")
                     //? if >=1.21.6 {
-                    /*.withUniform("Glint", UniformType.UNIFORM_BUFFER)*/
-                    //? } else {
+                    /*.withUniform("Glint", UniformType.UNIFORM_BUFFER)
+                    *///?} else {
                     .withUniform("GlintColor", UniformType.VEC3)
-                    //? }
+                    //?}
                     .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
                     .buildSnippet();
 

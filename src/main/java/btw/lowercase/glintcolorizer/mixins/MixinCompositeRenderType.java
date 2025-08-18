@@ -41,7 +41,7 @@ public abstract class MixinCompositeRenderType {
             }
         }
     }
-    //? } else {
+    //?} else {
     /*@Unique
     private static GpuBuffer glintcolorizer$colorGpuBuffer = null;
 
@@ -83,7 +83,7 @@ public abstract class MixinCompositeRenderType {
         try (final MemoryStack memoryStack = MemoryStack.stackPush()) {
             return MemoryUtil.memByteBuffer(memoryStack.floats(floats));
         }
-    }*/
-    //? }
+    }
+    *///?}
 
 }
