@@ -4,6 +4,11 @@ import btw.lowercase.glintcolorizer.command.GlintColorizerCommand;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+//? if <1.21.2 {
+/*import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
+import net.fabricmc.loader.api.FabricLoader;
+*///?}
 import net.minecraft.resources.ResourceLocation;
 
 
@@ -35,6 +40,16 @@ public class GlintColorizer /*? if fabric {*/ implements ModInitializer /*?}*/ {
     public void onInitialize() {
         // Config
         GlintColorizerConfig.load();
+
+        //? if <1.21.2 {
+        /*// Builtin Pack
+        ResourceManagerHelperImpl.registerBuiltinResourcePack(
+                id(MOD_ID),
+                MOD_ID,
+                FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow(),
+                ResourcePackActivationType.ALWAYS_ENABLED
+        );
+        *///?}
 
         // Commands
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> dispatcher.register(GlintColorizerCommand.create()));

@@ -32,11 +32,19 @@ import java.util.List;
 
 @Mixin(ItemRenderer.class)
 public abstract class MixinItemRenderer {
-    @Inject(method = "renderItem", at = @At("HEAD"))
+    @Inject(method =
+            //? >=1.21.2
+            "renderItem"
+            //? <1.21.2
+            /*"render"*/
+            , at = @At("HEAD"))
     private static void glintcolorizer$storeDisplayType(
                                                         //? <1.21.4
                                                         ItemStack itemStack,
-                                                        ItemDisplayContext itemDisplayContext, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j,
+                                                        ItemDisplayContext itemDisplayContext,
+                                                        //? <1.21.2
+                                                        /*boolean bl,*/
+                                                        PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j,
                                                         //? >=1.21.4
                                                         /*int[] is,*/
                                                         //? <1.21.5
@@ -45,7 +53,7 @@ public abstract class MixinItemRenderer {
                                                         /*List<BakedQuad> list, */
                                                         //? >=1.21.4
                                                         /*RenderType renderType, ItemStackRenderState.FoilType foilType,*/
-                                                        //? <1.21.4
+                                                        //? if >=1.21.2 <1.21.4
                                                         boolean bl,
             CallbackInfo ci) {
         //? <1.21.4

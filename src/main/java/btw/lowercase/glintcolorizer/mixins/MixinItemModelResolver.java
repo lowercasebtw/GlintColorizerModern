@@ -23,10 +23,10 @@ public abstract class MixinItemModelResolver {
         GlintMetadata.setItemStack(itemStack);
     }
 }*/
-//? } else {
+//?} else {
 import net.minecraft.client.Minecraft;
 @Mixin(Minecraft.class)
 public abstract class MixinItemModelResolver {
 
 }
-//? }
+//?}

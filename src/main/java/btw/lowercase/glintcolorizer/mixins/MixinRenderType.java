@@ -7,8 +7,11 @@ import btw.lowercase.glintcolorizer.GlintPipeline;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.MeshData;
+//? if >=1.21.2
 import net.minecraft.client.renderer.CompiledShaderProgram;
 import net.minecraft.client.renderer.RenderType;
+//? if <1.21.2
+/*import net.minecraft.client.renderer.ShaderInstance;*/
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +30,12 @@ public abstract class MixinRenderType {
             final boolean isSecondLayer = renderType == GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE || renderType == GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_RENDERTYPE || renderType == GlintPipeline.ARMOR_GLINT_2ND_LAYER_RENDERTYPE;
             if (isFirstLayer || isSecondLayer) {
                 final boolean isArmor = renderType == GlintPipeline.ARMOR_GLINT_1ST_LAYER_RENDERTYPE || renderType == GlintPipeline.ARMOR_GLINT_2ND_LAYER_RENDERTYPE;
-                final CompiledShaderProgram shaderProgram = Objects.requireNonNull(RenderSystem.getShader());
+                final
+                //? if <1.21.2
+                /*ShaderInstance*/
+                //? if >=1.21.2
+                CompiledShaderProgram
+                shaderProgram = Objects.requireNonNull(RenderSystem.getShader());
                 Objects.requireNonNull(shaderProgram.getUniform("GlintColor")).set(GlintMetadata.getGlintColor(isFirstLayer ? GlintLayer.FIRST : GlintLayer.SECOND, isArmor));
             }
         }

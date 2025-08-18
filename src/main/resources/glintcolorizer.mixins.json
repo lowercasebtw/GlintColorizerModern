@@ -1,19 +1,20 @@
 {
-	"required": true,
-	"package": "btw.lowercase.glintcolorizer.mixins",
-	"compatibilityLevel": "JAVA_17",
-	"client": [
-		"MixinCompositeRenderType",
-		"MixinItem",
-		"MixinItemModelResolver",
-		"MixinItemRenderer",
-		"MixinRenderBuffers",
-		"MixinRenderType",
-		"accessor.RenderPipelinesAccessor",
-		"accessor.RenderTypeAccessor",
-		"accessor.RenderTypeCompositeStateBuilderAccessor"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "btw.lowercase.glintcolorizer.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "MixinCompositeRenderType",
+    "MixinItem",
+    "MixinItemModelResolver",
+    "MixinItemRenderer",
+    "MixinRenderBuffers",
+    "MixinRenderType",
+    "MixinShaderInstance",
+    "accessor.RenderPipelinesAccessor",
+    "accessor.RenderTypeAccessor",
+    "accessor.RenderTypeCompositeStateBuilderAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

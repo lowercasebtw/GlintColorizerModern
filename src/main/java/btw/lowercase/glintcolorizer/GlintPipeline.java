@@ -15,23 +15,35 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.resources.ResourceLocation;
+//? if >=1.21.2
 import net.minecraft.util.TriState;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.IOException;
+
 public class GlintPipeline {
     public static final ResourceLocation GLINT_TEXTURE_PATH = GlintColorizer.id("textures/misc/enchanted_item_glint.png");
 
-    //? if <1.21.5 {
+
+    //? if >=1.21.2 <1.21.5 {
     public static final ShaderProgram GLINT_SHADER = new ShaderProgram(
             GlintColorizer.id("core/glint"),
             DefaultVertexFormat.POSITION_TEX,
             ShaderDefines.EMPTY
     );
+    //?}
 
-    public static final RenderStateShard.ShaderStateShard GLINT_SHADER_SHARD = new RenderStateShard.ShaderStateShard(GLINT_SHADER);
+    //? if <1.21.5 {
+    public static final RenderStateShard.ShaderStateShard GLINT_SHADER_SHARD =
+            //? if >=1.21.2 {
+            new RenderStateShard.ShaderStateShard(GLINT_SHADER);
+            //?} else {
+            /*new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexShader);
+            *///?}
     //?} else {
     /*private static final RenderPipeline.Snippet GLINT_PIPELINE_SNIPPET =
             RenderPipeline.builder(RenderPipelinesAccessor.getMatricesColorFogSnippet())
@@ -108,8 +120,10 @@ public class GlintPipeline {
         //? if <1.21.5
         compositeStateBuilder.withShaderState(GLINT_SHADER_SHARD);
         compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH,
-                //? <1.21.6
+                //? >=1.21.2 <1.21.6
                 TriState.DEFAULT,
+                //? <1.21.2
+                /*true,*/
                 false));
         compositeStateBuilder.withTexturingState(texturingStateShard);
         //? if <1.21.5 {
@@ -194,8 +208,10 @@ public class GlintPipeline {
         //? <1.21.5
         compositeStateBuilder.withShaderState(GLINT_SHADER_SHARD);
         compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH,
-                //? <1.21.6
+                //? >=1.21.2 <1.21.6
                 TriState.DEFAULT,
+                //? <1.21.2
+                /*true,*/
                 false));
         compositeStateBuilder.withTexturingState(texturingStateShard);
         compositeStateBuilder.withLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING);
@@ -226,7 +242,18 @@ public class GlintPipeline {
         return (float) (GLFW.glfwGetTime() * 1000.0F);
     }
 
-    //? if <1.21.5 {
+    //? if <1.21.2 {
+    /*private static ShaderInstance createShader(ResourceLocation resourceLocation, VertexFormat vertexFormat) {
+        try (ShaderInstance shaderInstance = new ShaderInstance(Minecraft.getInstance().getResourceManager(), resourceLocation.toString(), vertexFormat)) {
+            return shaderInstance;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to create glint shader.");
+        }
+    }
+    *///?}
+
+    //? if >=1.21.2 <1.21.5 {
     static {
         CoreShaders.getProgramsToPreload().add(GLINT_SHADER);
     }
