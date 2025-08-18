@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class MixinItem {
     @WrapOperation(method = "isFoil", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEnchanted()Z"))
     private boolean glintcolorizer$enablePotionGlint(ItemStack instance, Operation<Boolean> original) {
-        //return (instance.getItem() instanceof PotionItem && GlintColorizerConfig.instance().shinyPots.enabled) || original.call(instance);
         boolean hasGlint = original.call(instance);
         if (GlintColorizerConfig.instance().shinyPots.enabled && instance.getItem() instanceof PotionItem && !hasGlint) {
             PotionContents potionContents = instance.get(DataComponents.POTION_CONTENTS);
