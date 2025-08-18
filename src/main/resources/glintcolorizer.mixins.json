@@ -8,6 +8,7 @@
 		"MixinItemModelResolver",
 		"MixinItemRenderer",
 		"MixinRenderBuffers",
+		"MixinRenderType",
 		"accessor.RenderPipelinesAccessor",
 		"accessor.RenderTypeAccessor",
 		"accessor.RenderTypeCompositeStateBuilderAccessor"

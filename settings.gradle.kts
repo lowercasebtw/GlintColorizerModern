@@ -27,8 +27,8 @@ stonecutter {
 		}
 
 //		mc("1.21.1", listOf("fabric"))
-//		mc("1.21.3", listOf("fabric"))
-//		mc("1.21.4", listOf("fabric"))
+		mc("1.21.3", listOf("fabric"))
+		mc("1.21.4", listOf("fabric"))
 		mc("1.21.5", listOf("fabric"))
 		mc("1.21.6", listOf("fabric"))
 

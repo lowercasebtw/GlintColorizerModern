@@ -1,6 +1,7 @@
 package btw.lowercase.glintcolorizer.mixins;
 
-import btw.lowercase.glintcolorizer.GlintLayer;
+//? if >=1.21.5 {
+/*import btw.lowercase.glintcolorizer.GlintLayer;
 import btw.lowercase.glintcolorizer.GlintMetadata;
 import btw.lowercase.glintcolorizer.GlintPipeline;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
@@ -42,7 +43,7 @@ public abstract class MixinCompositeRenderType {
         }
     }
     //?} else {
-    /*@Unique
+    /^@Unique
     private static GpuBuffer glintcolorizer$colorGpuBuffer = null;
 
     @Inject(method = "draw", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;setupRenderState()V", shift = At.Shift.AFTER))
@@ -84,6 +85,15 @@ public abstract class MixinCompositeRenderType {
             return MemoryUtil.memByteBuffer(memoryStack.floats(floats));
         }
     }
-    *///?}
+    ^///?}
 
 }
+*///?} else {
+import net.minecraft.client.Minecraft;
+import org.spongepowered.asm.mixin.Mixin;
+
+@Mixin(Minecraft.class)
+public interface MixinCompositeRenderType {
+
+}
+//?}
