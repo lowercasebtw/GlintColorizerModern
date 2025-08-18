@@ -16,7 +16,12 @@ public class GlintColorizerCommand implements Command<FabricClientCommandSource>
     @Override
     public int run(CommandContext<FabricClientCommandSource> context) {
         Minecraft client = context.getSource().getClient();
-        client.schedule(() -> client.setScreen(GlintColorizerConfig.getConfigScreen(client.screen)));
+        client.
+                //? if >=1.21.2
+                schedule
+                //? if <1.21.2
+                /*tell*/
+                        (() -> client.setScreen(GlintColorizerConfig.getConfigScreen(client.screen)));
         return Command.SINGLE_SUCCESS;
     }
 }

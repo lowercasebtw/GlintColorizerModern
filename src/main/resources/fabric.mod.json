@@ -1,30 +1,43 @@
 {
 	"schemaVersion": 1,
-	"id": "glintcolorizer",
+	"id": "${id}",
 	"version": "${version}",
-	"name": "GlintColorizer",
-	"description": "Customize the glint of enchanted items.",
+	"name": "${name}",
+	"description": "${description}",
 	"authors": [
 		"Polyfrost",
 		"lowercasebtw"
 	],
-	"icon": "assets/glintcolorizer/icon.png",
-	"environment": "client",
-	"entrypoints": {
-		"client": [
-			"btw.lowercase.glintcolorizer.GlintColorizer"
-		],
-		"modmenu": [
-			"btw.lowercase.glintcolorizer.config.ModMenuIntegration"
-		]
-	},
-	"mixins": [
-		"glintcolorizer.mixins.json"
+	"contributors": [
 	],
+	"contact": {
+		"homepage": "${modrinth}",
+		"sources": "${source}",
+		"issues": "${issues}"
+	},
+	"license": "${license}",
+	"icon": "assets/${id}/icon.png",
+	"environment": "client",
 	"depends": {
-		"fabricloader": ">=0.17.0",
-		"minecraft": "~1.21.5",
+		"fabricloader": ">=${fabric_loader_version}",
+		"minecraft": "${mcdep}",
+		"java": ">=16",
 		"fabric-api": "*",
-		"yet_another_config_lib_v3": "*"
+		"yet_another_config_lib_v3": ">=${yacl_version}"
+	},
+	"breaks": {
+		"feather": "*",
+		"labymod": "*",
+		"ichor": "*"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "${discord}",
+				"modmenu.modrinth": "${modrinth}",
+				"modmenu.curseforge": "${curseforge}"
+			},
+			"update_checker": true
+		}
 	}
 }
