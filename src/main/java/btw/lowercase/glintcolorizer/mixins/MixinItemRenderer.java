@@ -65,7 +65,13 @@ public abstract class MixinItemRenderer {
         }
     }
 
-    @WrapOperation(method = "getCompassFoilBuffer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
+    @WrapOperation(method =
+            //? if >=1.21.6 {
+            /*"getSpecialFoilBuffer",*/
+            //? } else {
+            "getCompassFoilBuffer",
+            //? }
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
     private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass(MultiBufferSource multiBufferSource, RenderType renderType, Operation<VertexConsumer> original) {
         if (GlintColorizerConfig.instance().useCustomRenderer) {
             VertexConsumer firstGlintLayerVertexConsumer = multiBufferSource.getBuffer(GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE);
@@ -76,7 +82,13 @@ public abstract class MixinItemRenderer {
         }
     }
 
-    @WrapOperation(method = "getCompassFoilBuffer", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexMultiConsumer;create(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lcom/mojang/blaze3d/vertex/VertexConsumer;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
+    @WrapOperation(method =
+            //? if >=1.21.6 {
+            /*"getSpecialFoilBuffer",*/
+            //? } else {
+            "getCompassFoilBuffer",
+            //? }
+            at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexMultiConsumer;create(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lcom/mojang/blaze3d/vertex/VertexConsumer;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
     private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass$enabled(VertexConsumer glintVertexConsumer, VertexConsumer itemVertexConsumer, Operation<VertexConsumer> original) {
         if (GlintColorizerConfig.instance().useCustomRenderer && !GlintMetadata.getRenderingOptions().enabled) {
             return itemVertexConsumer;
