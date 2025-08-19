@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -20,8 +19,8 @@ import java.io.IOException;
 
 public class GlintPipeline {
     public static final ResourceLocation GLINT_TEXTURE_PATH = GlintColorizer.id("textures/misc/enchanted_item_glint.png");
-    //    public static final ShaderInstance GLINT_SHADER = createShader(GlintColorizer.id("glint"), DefaultVertexFormat.POSITION_TEX);
-    public static final RenderStateShard.ShaderStateShard GLINT_SHADER_SHARD = new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexShader);
+    public static final ShaderInstance GLINT_SHADER = createShader(GlintColorizer.id("glint"), DefaultVertexFormat.POSITION_TEX);
+    public static final RenderStateShard.ShaderStateShard GLINT_SHADER_SHARD = new RenderStateShard.ShaderStateShard(() -> GLINT_SHADER);
 
     // Item
     public static final RenderType ITEM_GLINT_1ST_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(
@@ -138,7 +137,7 @@ public class GlintPipeline {
             return shaderInstance;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Failed to create glint shader.");
+            throw new RuntimeException("Failed to create " + resourceLocation + " shader.");
         }
     }
 }
