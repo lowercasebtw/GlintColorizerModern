@@ -28,7 +28,7 @@ public abstract class MixinRenderType {
                 final boolean isArmor = renderType == GlintPipeline.ARMOR_GLINT_1ST_LAYER_RENDERTYPE || renderType == GlintPipeline.ARMOR_GLINT_2ND_LAYER_RENDERTYPE;
                 final ShaderInstance shaderProgram = Objects.requireNonNull(RenderSystem.getShader());
                 final Vector3f color = GlintMetadata.getGlintColor(isFirstLayer ? GlintLayer.FIRST : GlintLayer.SECOND, isArmor);
-                // Objects.requireNonNull(shaderProgram.getUniform("GlintColor")).set(color);
+                Objects.requireNonNull(shaderProgram.getUniform("GlintColor")).set(color);
             }
         }
     }

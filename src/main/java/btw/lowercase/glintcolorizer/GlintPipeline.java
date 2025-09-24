@@ -7,15 +7,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
-
-import java.io.IOException;
 
 public class GlintPipeline {
     public static final ResourceLocation GLINT_TEXTURE_PATH = GlintColorizer.id("textures/misc/enchanted_item_glint.png");
@@ -133,11 +131,12 @@ public class GlintPipeline {
     }
 
     private static ShaderInstance createShader(ResourceLocation resourceLocation, VertexFormat vertexFormat) {
-        try (ShaderInstance shaderInstance = new ShaderInstance(Minecraft.getInstance().getResourceManager(), resourceLocation.toString(), vertexFormat)) {
-            return shaderInstance;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to create " + resourceLocation + " shader.");
-        }
+        return GameRenderer.getPositionTexColorShader();
+//        try (ShaderInstance shaderInstance = new ShadezrInstance(Minecraft.getInstance().getResourceManager(), resourceLocation.toString(), vertexFormat)) {
+//            return shaderInstance;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Failed to create " + resourceLocation + " shader.");
+//        }
     }
 }
