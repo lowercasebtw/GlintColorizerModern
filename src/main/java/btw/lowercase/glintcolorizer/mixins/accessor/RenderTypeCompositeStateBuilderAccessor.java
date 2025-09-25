@@ -10,6 +10,23 @@ public interface RenderTypeCompositeStateBuilderAccessor {
     @Invoker("setTextureState")
     RenderType.CompositeState.CompositeStateBuilder withTextureState(RenderStateShard.EmptyTextureStateShard emptyTextureStateShard);
 
+    //? if <1.21.5 {
+    @Invoker("setShaderState")
+    RenderType.CompositeState.CompositeStateBuilder withShaderState(RenderStateShard.ShaderStateShard shaderStateShard);
+
+    @Invoker("setDepthTestState")
+    RenderType.CompositeState.CompositeStateBuilder withDepthTestState(RenderStateShard.DepthTestStateShard depthTestStateShard);
+
+    @Invoker("setTransparencyState")
+    RenderType.CompositeState.CompositeStateBuilder withBlendState(RenderStateShard.TransparencyStateShard transparencyStateShard);
+
+    @Invoker("setCullState")
+    RenderType.CompositeState.CompositeStateBuilder withCullState(RenderStateShard.CullStateShard cullStateShard);
+
+    @Invoker("setWriteMaskState")
+    RenderType.CompositeState.CompositeStateBuilder withWriteMaskState(RenderStateShard.WriteMaskStateShard writeMaskStateShard);
+    //?}
+
     @Invoker("setLayeringState")
     RenderType.CompositeState.CompositeStateBuilder withLayeringState(RenderStateShard.LayeringStateShard layeringStateShard);
 
