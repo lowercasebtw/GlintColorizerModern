@@ -14,7 +14,8 @@
 		"v1_21_6.MixinGuiGraphics_SaveGuiItemStack",
 		"v1_21_6.MixinGuiRenderer_ApplyGuiItemStack",
 		"v1_21_6.MixinItemFrameRenderer_SaveFramedItemStackAndApply",
-		"v1_21_6.MixinItemStackRenderState_StoreItemStack"
+		"v1_21_6.MixinItemStackRenderState_StoreItemStack",
+		"v1_21_9.MixinEquipmentLayerRenderer_ApplyArmorGlint"
 	],
 	"injectors": {
 		"defaultRequire": 1

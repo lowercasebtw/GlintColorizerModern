@@ -70,7 +70,7 @@ public abstract class MixinRenderType_ApplyGlintColor {
             renderPass.setUniform("Glint", glintcolorizer$colorGpuBuffer);
         }
     }
-    //? } else {
+    //?} else {
     /*@Inject(method = "draw", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderPass;setIndexBuffer(Lcom/mojang/blaze3d/buffers/GpuBuffer;Lcom/mojang/blaze3d/vertex/VertexFormat$IndexType;)V", shift = At.Shift.AFTER))
     private void glintcolorizer$applyGlintColor(MeshData meshData, CallbackInfo ci, @Local RenderPass renderPass) {
         if (GlintColorizerConfig.instance().useCustomRenderer) {
@@ -82,5 +82,5 @@ public abstract class MixinRenderType_ApplyGlintColor {
             }
         }
     }
-    *///? }
+    *///?}
 }

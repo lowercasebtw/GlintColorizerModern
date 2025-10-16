@@ -11,7 +11,12 @@ import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.injection.At;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
+
+//? >=1.21.9 {
+import net.minecraft.client.renderer.item.TrackingItemStackRenderState;
+//? } else {
+/*import net.minecraft.client.renderer.item.ItemStackRenderState;
+ *///? }
 
 @Mixin(GuiGraphics.class)
 public abstract class MixinGuiGraphics_SaveGuiItemStack {
@@ -19,11 +24,33 @@ public abstract class MixinGuiGraphics_SaveGuiItemStack {
             method = "renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;III)V",
             at = @At(
                     value = "NEW",
-                    target = "()Lnet/minecraft/client/renderer/item/ItemStackRenderState;"
+                    //? >=1.21.9 {
+                    target = "()Lnet/minecraft/client/renderer/item/TrackingItemStackRenderState;"
+                    //? } else {
+                    /*target = "()Lnet/minecraft/client/renderer/item/ItemStackRenderState;"
+                    *///? }
             )
     )
-    private ItemStackRenderState glintcolorizer$storeItemGui(Operation<ItemStackRenderState> original, @Local(argsOnly = true) ItemStack itemStack) {
-        ItemStackRenderState itemStackRenderState = original.call();
+    private
+    //? >=1.21.9 {
+    TrackingItemStackRenderState
+    //? } else {
+    /*ItemStackRenderState
+    *///? }
+    glintcolorizer$storeItemGui(
+            //? >=1.21.9 {
+            Operation<TrackingItemStackRenderState> original,
+            //? } else {
+            /*Operation<ItemStackRenderState> original,
+            *///? }
+            @Local(argsOnly = true) ItemStack itemStack
+    ) {
+        //? >=1.21.9 {
+        TrackingItemStackRenderState
+        //? } else {
+        /*ItemStackRenderState
+         *///? }
+        itemStackRenderState = original.call();
         if (GlintColorizerConfig.instance().useCustomRenderer) {
             ((ItemRenderStateStorage) itemStackRenderState).glintcolorizer$setItemStack(itemStack);
         }
@@ -31,7 +58,7 @@ public abstract class MixinGuiGraphics_SaveGuiItemStack {
         return itemStackRenderState;
     }
 }
-//? } else {
+//?} else {
 /*@Mixin(GuiGraphics.class)
 public abstract class MixinGuiGraphics_SaveGuiItemStack {}
-*///? }
+*///?}

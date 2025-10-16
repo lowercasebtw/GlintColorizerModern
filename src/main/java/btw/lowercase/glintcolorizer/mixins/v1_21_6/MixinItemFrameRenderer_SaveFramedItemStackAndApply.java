@@ -21,7 +21,7 @@ public abstract class MixinItemFrameRenderer_SaveFramedItemStackAndApply {
         ((ItemRenderStateStorage) itemFrameRenderState.item).glintcolorizer$setItemStack(entity.getItem());
     }
 }
-//? } else {
+//?} else {
 /*@Mixin(ItemFrameRenderer.class)
 public abstract class MixinItemFrameRenderer_SaveFramedItemStackAndApply {}
-*///? }
+*///?}

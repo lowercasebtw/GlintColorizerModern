@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -22,16 +21,20 @@ public abstract class MixinItemModelResolver_StoreItemStack {
             ItemStack stack,
             ItemDisplayContext displayContext,
             Level level,
-            LivingEntity entity,
+            //? >=1.21.9 {
+            net.minecraft.world.entity.ItemOwner itemOwner,
+            //? } else {
+            /*net.minecraft.world.entity.LivingEntity entity,
+            *///? }
             int seed,
             CallbackInfo ci
     ) {
         boolean shouldApply =
                 //? >=1.21.6 {
                 displayContext != ItemDisplayContext.GUI;
-                //? } else {
+                //?} else {
                 /*true;
-                 *///? }
+                 *///?}
         if (shouldApply) {
             GlintMetadata.setItemStack(stack);
         }

@@ -21,7 +21,7 @@ public abstract class MixinGuiRenderer_ApplyGuiItemStack {
         GlintMetadata.setRenderMode(GlintMetadata.RenderMode.GUI);
     }
 }
-//? } else {
+//?} else {
 /*@Mixin(net.minecraft.client.Minecraft.class)
 public abstract class MixinGuiRenderer_ApplyGuiItemStack {}
-*///? }
+*///?}
