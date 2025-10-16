@@ -9,6 +9,7 @@ public class CustomItemStackRenderState extends ItemStackRenderState {
     private final ItemStack itemStack;
 
     public CustomItemStackRenderState(ItemStack itemStack) {
+        super();
         this.itemStack = itemStack;
     }
 

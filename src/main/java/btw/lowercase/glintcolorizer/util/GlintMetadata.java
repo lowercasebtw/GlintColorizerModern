@@ -6,9 +6,8 @@ import btw.lowercase.glintcolorizer.config.category.ShinyPotsCategory;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
-import java.util.Objects;
-//? if >=1.21.2
 
+import java.util.Objects;
 
 public class GlintMetadata {
     public enum RenderMode {
