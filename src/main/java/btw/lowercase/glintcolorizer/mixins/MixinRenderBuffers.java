@@ -15,18 +15,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinRenderBuffers {
     @Inject(method = "put", at = @At("HEAD"))
     private static void glintcolorizer$addGlintLayers(Object2ObjectLinkedOpenHashMap<RenderType, ByteBufferBuilder> map, RenderType renderType, CallbackInfo ci) {
-        glintcolorizer$addRenderType(GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE, map);
-        glintcolorizer$addRenderType(GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_RENDERTYPE, map);
-        glintcolorizer$addRenderType(GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE, map);
-        glintcolorizer$addRenderType(GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_RENDERTYPE, map);
-        glintcolorizer$addRenderType(GlintPipeline.ARMOR_GLINT_1ST_LAYER_RENDERTYPE, map);
-        glintcolorizer$addRenderType(GlintPipeline.ARMOR_GLINT_2ND_LAYER_RENDERTYPE, map);
+        glintcolorizer$addRenderTypes(
+                map,
+                GlintPipeline.ITEM_GLINT_1ST_LAYER_RENDERTYPE,
+                GlintPipeline.SHINY_ITEM_GLINT_1ST_LAYER_RENDERTYPE,
+                GlintPipeline.ITEM_GLINT_2ND_LAYER_RENDERTYPE,
+                GlintPipeline.SHINY_ITEM_GLINT_2ND_LAYER_RENDERTYPE,
+                GlintPipeline.ARMOR_GLINT_1ST_LAYER_RENDERTYPE,
+                GlintPipeline.ARMOR_GLINT_2ND_LAYER_RENDERTYPE
+        );
     }
 
     @Unique
-    private static void glintcolorizer$addRenderType(RenderType renderType, Object2ObjectLinkedOpenHashMap<RenderType, ByteBufferBuilder> map) {
-        if (!map.containsKey(renderType)) {
-            map.put(renderType, new ByteBufferBuilder(renderType.bufferSize()));
+    private static void glintcolorizer$addRenderTypes(Object2ObjectLinkedOpenHashMap<RenderType, ByteBufferBuilder> map, RenderType... renderTypes) {
+        for (RenderType renderType : renderTypes) {
+            if (!map.containsKey(renderType)) {
+                map.put(renderType, new ByteBufferBuilder(renderType.bufferSize()));
+            }
         }
     }
 }

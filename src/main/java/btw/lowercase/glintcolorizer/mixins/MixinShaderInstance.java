@@ -27,7 +27,7 @@ public abstract class MixinShaderInstance {
 import net.minecraft.client.Minecraft;
 
 @Mixin(Minecraft.class)
-public interface MixinShaderInstance {
+public abstract class MixinShaderInstance {
 
 }
 //?}

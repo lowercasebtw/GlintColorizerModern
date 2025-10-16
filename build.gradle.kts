@@ -129,7 +129,6 @@ dependencies {
     modRuntimeOnly("me.djtheredstoner:DevAuth-${loader.loader}:${deps.devauthVersion}")
     include(implementation("com.moulberry:mixinconstraints:${deps.mixinconstraintsVersion}")!!)!!
     include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-${loader.loader}:${deps.mixinsquaredVersion}")!!)!!)
-
     if (loader.isFabric) {
         modImplementation("net.fabricmc:fabric-loader:${deps.fabricLoaderVersion}")!!
         modImplementation("net.fabricmc.fabric-api:fabric-api:${deps.fabricApiVersion}+${mc.version}")
@@ -156,26 +155,20 @@ val curseforgeId = findProperty("publish.curseforge")?.toString()?.takeIf { it.i
 // curseforge.token=
 publishMods {
     file = project.tasks.remapJar.get().archiveFile
-
     displayName = "${mod.name} ${mod.version}"
     this.version = mod.version.toString()
     changelog = project.rootProject.file("CHANGELOG.md").takeIf { it.exists() }?.readText() ?: "No changelog provided."
     type = STABLE
-
     modLoaders.add(loader.loader)
-
     dryRun = modrinthId == null && curseforgeId == null
-
     if (modrinthId != null) {
         modrinth {
             projectId = property("publish.modrinth").toString()
             accessToken = findProperty("modrinth.token").toString()
-
             if (rangeRegex.matches(mc.dep)) {
                 val match = rangeRegex.find(mc.dep)!!
                 val minVersion = match.groupValues[1]
                 val maxVersion = match.groupValues.getOrNull(2)?.takeIf { it.isNotBlank() } ?: "latest"
-
                 minecraftVersionRange {
                     start = minVersion
                     end = maxVersion
@@ -198,12 +191,10 @@ publishMods {
         curseforge {
             projectId = property("publish.curseforge").toString()
             accessToken = findProperty("curseforge.token").toString()
-
             if (rangeRegex.matches(mc.dep)) {
                 val match = rangeRegex.find(mc.dep)!!
                 val minVersion = match.groupValues[1]
                 val maxVersion = match.groupValues.getOrNull(2)?.takeIf { it.isNotBlank() } ?: "latest"
-
                 minecraftVersionRange {
                     start = minVersion
                     end = maxVersion

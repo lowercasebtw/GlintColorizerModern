@@ -18,7 +18,6 @@ plugins {
 stonecutter {
 	kotlinController = true
 	centralScript = "build.gradle.kts"
-
 	create(rootProject) {
 		fun mc(mcVersion: String, loaders: Iterable<String>) {
 			for (loader in loaders) {
@@ -30,9 +29,10 @@ stonecutter {
 		mc("1.21.3", listOf("fabric"))
 		mc("1.21.4", listOf("fabric"))
 		mc("1.21.5", listOf("fabric"))
-		mc("1.21.6", listOf("fabric"))
+		mc("1.21.8", listOf("fabric"))
+		mc("1.21.9", listOf("fabric"))
 
-		vcsVersion = "1.21.6-fabric"
+		vcsVersion = "1.21.8-fabric"
 	}
 }
 
