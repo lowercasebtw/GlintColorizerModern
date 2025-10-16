@@ -1,4 +1,4 @@
-package btw.lowercase.glintcolorizer;
+package btw.lowercase.glintcolorizer.util;
 
 //? >=1.21.6 {
 import net.minecraft.client.renderer.item.ItemStackRenderState;

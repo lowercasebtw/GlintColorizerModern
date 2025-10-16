@@ -1,4 +1,4 @@
-package btw.lowercase.glintcolorizer;
+package btw.lowercase.glintcolorizer.util;
 
 public enum GlintLayer {
     FIRST,

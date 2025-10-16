@@ -4,7 +4,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.6 {
-import btw.lowercase.glintcolorizer.CustomItemStackRenderState;
+import btw.lowercase.glintcolorizer.util.CustomItemStackRenderState;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.item.ItemStack;

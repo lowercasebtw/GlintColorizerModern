@@ -1,4 +1,4 @@
-package btw.lowercase.glintcolorizer;
+package btw.lowercase.glintcolorizer.util;
 
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import btw.lowercase.glintcolorizer.config.category.BaseGlint;
@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 import java.util.Objects;
 //? if >=1.21.2
-import net.minecraft.util.ARGB;
+
 
 public class GlintMetadata {
     public enum RenderMode {

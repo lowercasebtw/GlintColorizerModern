@@ -4,8 +4,8 @@ import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.6 {
 import net.minecraft.client.gui.render.GuiRenderer;
-import btw.lowercase.glintcolorizer.CustomItemStackRenderState;
-import btw.lowercase.glintcolorizer.GlintMetadata;
+import btw.lowercase.glintcolorizer.util.CustomItemStackRenderState;
+import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.render.state.GuiItemRenderState;
 import org.apache.commons.lang3.mutable.MutableBoolean;

@@ -1,11 +1,11 @@
-package btw.lowercase.glintcolorizer;
+package btw.lowercase.glintcolorizer.util;
 
+import btw.lowercase.glintcolorizer.GlintColorizer;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 //? if >=1.21.5
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderPipelinesAccessor;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderTypeAccessor;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderTypeCompositeStateBuilderAccessor;
-//? if >=1.21.5 {
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.DepthTestFunction;

@@ -1,7 +1,7 @@
 package btw.lowercase.glintcolorizer.mixins;
 
-import btw.lowercase.glintcolorizer.GlintMetadata;
-import btw.lowercase.glintcolorizer.GlintPipeline;
+import btw.lowercase.glintcolorizer.util.GlintMetadata;
+import btw.lowercase.glintcolorizer.util.GlintPipeline;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

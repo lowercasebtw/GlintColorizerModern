@@ -3,7 +3,7 @@ package btw.lowercase.glintcolorizer.mixins.v1_21_4;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? if >=1.21.4 {
-import btw.lowercase.glintcolorizer.GlintMetadata;
+import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.entity.LivingEntity;

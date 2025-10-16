@@ -1,6 +1,6 @@
 package btw.lowercase.glintcolorizer.mixins;
 
-import btw.lowercase.glintcolorizer.GlintPipeline;
+import btw.lowercase.glintcolorizer.util.GlintPipeline;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.client.renderer.RenderBuffers;
