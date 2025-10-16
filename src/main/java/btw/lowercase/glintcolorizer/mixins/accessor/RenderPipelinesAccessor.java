@@ -13,15 +13,11 @@ public interface RenderPipelinesAccessor {
     @Accessor("MATRICES_PROJECTION_SNIPPET")
     //?} else
     /*@Accessor("MATRICES_COLOR_FOG_SNIPPET")*/
-    static RenderPipeline.Snippet getMatricesColorFogSnippet() {
+    static RenderPipeline.Snippet glintcolorizer$getMatricesColorFogSnippet() {
         return null;
     }
 }
 //?} else {
-/*import net.minecraft.client.Minecraft;
-
-@Mixin(Minecraft.class)
-public interface RenderPipelinesAccessor {
-
-}
+/*@Mixin(net.minecraft.client.Minecraft.class)
+public interface RenderPipelinesAccessor {}
 *///?}

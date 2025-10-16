@@ -14,7 +14,6 @@ import com.mojang.blaze3d.vertex.MeshData;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.ARGB;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

@@ -17,32 +17,27 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.*;
 import net.minecraft.resources.ResourceLocation;
-//? if >=1.21.2
-import net.minecraft.util.TriState;
+//? if <1.21.6
+/*import net.minecraft.util.TriState;*/
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 public class GlintPipeline {
     public static final ResourceLocation GLINT_TEXTURE_PATH = GlintColorizer.id("textures/misc/enchanted_item_glint.png");
 
-    //? if >=1.21.2 <1.21.5 {
+    //? if <1.21.5 {
     /*public static final ShaderProgram GLINT_SHADER = new ShaderProgram(
             GlintColorizer.id("core/glint"),
             DefaultVertexFormat.POSITION_TEX,
             ShaderDefines.EMPTY
     );
-    *///?}
-
-    //? if <1.21.5 {
-    /*public static final RenderStateShard.ShaderStateShard GLINT_SHADER_SHARD =
-            //? if >=1.21.2 {
-            new RenderStateShard.ShaderStateShard(GLINT_SHADER);
-            //?} else {
-            /^new RenderStateShard.ShaderStateShard(GameRenderer::getPositionTexShader);
-            ^///?}
+    public static final RenderStateShard.ShaderStateShard GLINT_SHADER_SHARD = new RenderStateShard.ShaderStateShard(GLINT_SHADER);
+    static {
+        CoreShaders.getProgramsToPreload().add(GLINT_SHADER);
+    }
     *///?} else {
     private static final RenderPipeline.Snippet GLINT_PIPELINE_SNIPPET =
-            RenderPipeline.builder(RenderPipelinesAccessor.getMatricesColorFogSnippet())
+            RenderPipeline.builder(RenderPipelinesAccessor.glintcolorizer$getMatricesColorFogSnippet())
                     .withVertexShader(GlintColorizer.id("core/glint"))
                     .withFragmentShader(GlintColorizer.id("core/glint"))
                     .withBlend(BlendFunction.GLINT)
@@ -115,12 +110,12 @@ public class GlintPipeline {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
         //? if <1.21.5
         /*compositeStateBuilder.withShaderState(GLINT_SHADER_SHARD);*/
-        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH,
-                //? >=1.21.2 <1.21.6
+        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(
+                GLINT_TEXTURE_PATH,
+                //? <1.21.6
                 /*TriState.DEFAULT,*/
-                //? <1.21.2
-                /*true,*/
-                false));
+                false)
+        );
         compositeStateBuilder.withTexturingState(texturingStateShard);
         //? if <1.21.5 {
         /*compositeStateBuilder.withDepthTestState(shiny ? RenderType.NO_DEPTH_TEST : RenderType.EQUAL_DEPTH_TEST);
@@ -203,12 +198,12 @@ public class GlintPipeline {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
         //? <1.21.5
         /*compositeStateBuilder.withShaderState(GLINT_SHADER_SHARD);*/
-        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(GLINT_TEXTURE_PATH,
-                //? >=1.21.2 <1.21.6
+        compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(
+                GLINT_TEXTURE_PATH,
+                //? <1.21.6
                 /*TriState.DEFAULT,*/
-                //? <1.21.2
-                /*true,*/
-                false));
+                false)
+        );
         compositeStateBuilder.withTexturingState(texturingStateShard);
         compositeStateBuilder.withLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING);
         //? <1.21.5 {
@@ -237,21 +232,4 @@ public class GlintPipeline {
     private static float getSystemTime() {
         return (float) (GLFW.glfwGetTime() * 1000.0F);
     }
-
-    //? if <1.21.2 {
-    /*private static ShaderInstance createShader(ResourceLocation resourceLocation, VertexFormat vertexFormat) {
-        try (ShaderInstance shaderInstance = new ShaderInstance(net.minecraft.client.Minecraft.getInstance().getResourceManager(), resourceLocation.toString(), vertexFormat)) {
-            return shaderInstance;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to create glint shader.");
-        }
-    }
-    *///?}
-
-    //? if >=1.21.2 <1.21.5 {
-    /*static {
-        CoreShaders.getProgramsToPreload().add(GLINT_SHADER);
-    }
-    *///?}
 }

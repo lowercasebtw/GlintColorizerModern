@@ -10,8 +10,6 @@
 		"MixinItemModelResolver",
 		"MixinItemRenderer",
 		"MixinRenderBuffers",
-		"MixinRenderType",
-		"MixinShaderInstance",
 		"accessor.RenderPipelinesAccessor",
 		"accessor.RenderTypeAccessor",
 		"accessor.RenderTypeCompositeStateBuilderAccessor"

@@ -32,30 +32,24 @@ import java.util.List;
 
 @Mixin(ItemRenderer.class)
 public abstract class MixinItemRenderer {
-    @Inject(method =
-            //? >=1.21.2
-            "renderItem"
-            //? <1.21.2
-            /*"render"*/
-            , at = @At("HEAD"))
+    @Inject(method = "renderItem", at = @At("HEAD"))
     private static void glintcolorizer$storeDisplayType(
-                                                        //? <1.21.4
-                                                        /*ItemStack itemStack,*/
-                                                        ItemDisplayContext itemDisplayContext,
-                                                        //? <1.21.2
-                                                        /*boolean bl,*/
-                                                        PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j,
-                                                        //? >=1.21.4
-                                                        int[] is,
-                                                        //? <1.21.5
-                                                        /*BakedModel bakedModel,*/
-                                                        //? >=1.21.5
-                                                        List<BakedQuad> list, 
-                                                        //? >=1.21.4
-                                                        RenderType renderType, ItemStackRenderState.FoilType foilType,
-                                                        //? if >=1.21.2 <1.21.4
-                                                        /*boolean bl,*/
-            CallbackInfo ci) {
+            //? <1.21.4
+            /*ItemStack itemStack,*/
+            ItemDisplayContext itemDisplayContext,
+            PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j,
+            //? >=1.21.4
+            int[] is,
+            //? <1.21.5
+            /*BakedModel bakedModel,*/
+            //? >=1.21.5
+            List<BakedQuad> list,
+            //? >=1.21.4
+            RenderType renderType, ItemStackRenderState.FoilType foilType,
+            //? if <1.21.4
+            /*boolean bl,*/
+            CallbackInfo ci
+    ) {
         //? <1.21.4
         /*GlintMetadata.setItemStack(itemStack);*/
         GlintMetadata.setRenderMode(switch (itemDisplayContext) {
@@ -83,7 +77,6 @@ public abstract class MixinItemRenderer {
     }
 
     // TODO 1.21.9 EquipmentLayerRenderer
-    //? <=1.21.8 {
     @Inject(method = "getArmorFoilBuffer", at = @At("RETURN"), cancellable = true)
     private static void glintcolorizer$replaceWithCustomRenderer$armor(MultiBufferSource multiBufferSource, RenderType armorRenderType, boolean hasFoil, CallbackInfoReturnable<VertexConsumer> cir) {
         if (GlintColorizerConfig.instance().useCustomRenderer && hasFoil) {
@@ -97,7 +90,6 @@ public abstract class MixinItemRenderer {
             }
         }
     }
-    //?}
 
     @WrapOperation(method =
             //? if >=1.21.6 {

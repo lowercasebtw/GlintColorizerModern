@@ -1,11 +1,13 @@
 package btw.lowercase.glintcolorizer.config;
 
 import btw.lowercase.glintcolorizer.config.category.*;
-import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.ConfigCategory;
+import dev.isxander.yacl3.api.Option;
+import dev.isxander.yacl3.api.OptionDescription;
+import dev.isxander.yacl3.api.YetAnotherConfigLib;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import dev.isxander.yacl3.config.v2.api.autogen.AutoGen;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import dev.isxander.yacl3.platform.YACLPlatform;
 import net.minecraft.client.gui.screens.Screen;
@@ -90,6 +92,5 @@ public class GlintColorizerConfig {
 
     // Shiny Pots
     @SerialEntry
-    @AutoGen(category = "shiny_pots")
     public ShinyPotsCategory shinyPots = new ShinyPotsCategory();
 }

@@ -25,11 +25,6 @@
 		"fabric-api": "*",
 		"yet_another_config_lib_v3": ">=${yacl_version}"
 	},
-	"breaks": {
-		"feather": "*",
-		"labymod": "*",
-		"ichor": "*"
-	},
 	"custom": {
 		"modmenu": {
 			"links": {
