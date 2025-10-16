@@ -1,10 +1,10 @@
 package btw.lowercase.glintcolorizer.mixins.v1_21_6;
 
+import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.6 {
-import btw.lowercase.glintcolorizer.util.CustomItemStackRenderState;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.item.ItemStack;
@@ -23,14 +23,15 @@ public abstract class MixinGuiGraphics_SaveGuiItemStack {
             )
     )
     private ItemStackRenderState glintcolorizer$storeItemGui(Operation<ItemStackRenderState> original, @Local(argsOnly = true) ItemStack itemStack) {
+        ItemStackRenderState itemStackRenderState = original.call();
         if (GlintColorizerConfig.instance().useCustomRenderer) {
-            return new CustomItemStackRenderState(itemStack);
-        } else {
-            return original.call();
+            ((ItemRenderStateStorage) itemStackRenderState).glintcolorizer$setItemStack(itemStack);
         }
+
+        return itemStackRenderState;
     }
 }
 //? } else {
 /*@Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics {}
+public abstract class MixinGuiGraphics_SaveGuiItemStack {}
 *///? }

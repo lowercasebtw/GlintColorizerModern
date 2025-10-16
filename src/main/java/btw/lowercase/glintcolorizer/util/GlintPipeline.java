@@ -2,7 +2,7 @@ package btw.lowercase.glintcolorizer.util;
 
 import btw.lowercase.glintcolorizer.GlintColorizer;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
-//? if >=1.21.5
+//? if >=1.21.5 {
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderPipelinesAccessor;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderTypeAccessor;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderTypeCompositeStateBuilderAccessor;
