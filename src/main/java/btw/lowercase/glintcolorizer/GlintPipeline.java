@@ -46,7 +46,7 @@ public class GlintPipeline {
                     //? if >=1.21.6 {
                     .withUniform("Glint", UniformType.UNIFORM_BUFFER)
                     //?} else {
-                    /*.withUniform("GlintColor", UniformType.VEC3)
+                    /*.withUniform("GlintColor", UniformType.INT)
                     *///?}
                     .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
                     .buildSnippet();

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RenderBuffers.class)
-public abstract class MixinRenderBuffers {
+public abstract class MixinRenderBuffers_RegisterRenderTypes {
     @Inject(method = "put", at = @At("HEAD"))
     private static void glintcolorizer$addGlintLayers(Object2ObjectLinkedOpenHashMap<RenderType, ByteBufferBuilder> map, RenderType renderType, CallbackInfo ci) {
         glintcolorizer$addRenderTypes(

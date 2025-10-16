@@ -1,4 +1,4 @@
-package btw.lowercase.glintcolorizer.mixins;
+package btw.lowercase.glintcolorizer.mixins.v1_21_6;
 
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 
 @Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics {
+public abstract class MixinGuiGraphics_SaveGuiItemStack {
     @WrapOperation(
             method = "renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;III)V",
             at = @At(

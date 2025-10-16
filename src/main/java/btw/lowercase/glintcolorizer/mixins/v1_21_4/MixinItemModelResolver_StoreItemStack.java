@@ -1,4 +1,4 @@
-package btw.lowercase.glintcolorizer.mixins;
+package btw.lowercase.glintcolorizer.mixins.v1_21_4;
 
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemModelResolver.class)
-public abstract class MixinItemModelResolver {
+public abstract class MixinItemModelResolver_StoreItemStack {
     @Inject(method = "appendItemLayers", at = @At("HEAD"))
     private void glintcolorizer$storeItemStack(
             ItemStackRenderState renderState,

@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(ItemRenderer.class)
-public abstract class MixinItemRenderer {
+public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
     @Inject(method = "renderItem", at = @At("HEAD"))
     private static void glintcolorizer$storeDisplayType(
             //? <1.21.4
