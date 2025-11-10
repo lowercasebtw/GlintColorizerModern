@@ -78,7 +78,7 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
 
     // TODO 1.21.9 EquipmentLayerRenderer
     //? <=1.21.8 {
-    /*@Inject(method = "getArmorFoilBuffer", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getArmorFoilBuffer", at = @At("RETURN"), cancellable = true)
     private static void glintcolorizer$replaceWithCustomRenderer$armor(MultiBufferSource multiBufferSource, RenderType armorRenderType, boolean hasFoil, CallbackInfoReturnable<VertexConsumer> cir) {
         if (GlintColorizerConfig.instance().useCustomRenderer && hasFoil) {
             final VertexConsumer armorVertexConsumer = multiBufferSource.getBuffer(armorRenderType);
@@ -91,7 +91,7 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
             }
         }
     }
-    *///? }
+    //?}
 
     @WrapOperation(method =
             //? if >=1.21.6 {

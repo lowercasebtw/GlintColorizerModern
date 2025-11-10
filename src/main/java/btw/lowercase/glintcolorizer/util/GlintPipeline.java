@@ -79,7 +79,6 @@ public class GlintPipeline {
                     .withLocation(GlintColorizer.id("pipeline/shiny_item_glint_layer_2"))
                     .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
                     .build());
-
      //?}
 
     public static final RenderType ITEM_GLINT_1ST_LAYER_RENDERTYPE = makeItemGlintLayer(new RenderStateShard.TexturingStateShard(

@@ -14,14 +14,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiRenderer.class)
-public abstract class MixinGuiRenderer_ApplyGuiItemStack {
+public abstract class MixinGuiRenderer_ApplyGlintState {
     @Inject(method = "method_71055", at = @At("HEAD"))
     private void glintcolorizer$setGuiItemStack(MutableBoolean mutableBoolean, int i, int j, MutableBoolean mutableBoolean2, PoseStack poseStack, GuiItemRenderState guiItemRenderState, CallbackInfo ci) {
-        GlintMetadata.setItemStack(((ItemRenderStateStorage) guiItemRenderState.itemStackRenderState()).glintcolorizer$getItemStack());
-        GlintMetadata.setRenderMode(GlintMetadata.RenderMode.GUI);
+        ItemRenderStateStorage itemRenderStateStorage = (ItemRenderStateStorage) guiItemRenderState.itemStackRenderState();
+        GlintMetadata.setItemStack(itemRenderStateStorage.glintcolorizer$getItemStack());
+        GlintMetadata.setRenderMode(itemRenderStateStorage.glintcolorizer$getRenderMode());
     }
 }
 //?} else {
 /*@Mixin(net.minecraft.client.Minecraft.class)
-public abstract class MixinGuiRenderer_ApplyGuiItemStack {}
+public abstract class MixinGuiRenderer_ApplyGlintState {}
 *///?}

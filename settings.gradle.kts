@@ -1,3 +1,7 @@
+plugins {
+	id("dev.kikugie.stonecutter") version "0.7.8"
+}
+
 pluginManagement {
 	repositories {
 		mavenCentral()
@@ -9,10 +13,6 @@ pluginManagement {
 		maven("https://maven.kikugie.dev/releases")
 		maven("https://repo.polyfrost.cc/releases")
 	}
-}
-
-plugins {
-	id("dev.kikugie.stonecutter") version "0.7.8"
 }
 
 stonecutter {
@@ -30,6 +30,7 @@ stonecutter {
 		mc("1.21.5", listOf("fabric"))
 		mc("1.21.8", listOf("fabric"))
 		mc("1.21.10", listOf("fabric"))
+		mc("1.21.11", listOf("fabric"))
 
 		vcsVersion = "1.21.8-fabric"
 	}

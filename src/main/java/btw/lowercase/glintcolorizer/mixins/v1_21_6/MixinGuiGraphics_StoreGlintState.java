@@ -1,5 +1,6 @@
 package btw.lowercase.glintcolorizer.mixins.v1_21_6;
 
+import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,46 +14,47 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 //? >=1.21.9 {
-import net.minecraft.client.renderer.item.TrackingItemStackRenderState;
-//? } else {
-/*import net.minecraft.client.renderer.item.ItemStackRenderState;
- *///? }
+/*import net.minecraft.client.renderer.item.TrackingItemStackRenderState;
+*///?} else {
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+ //?}
 
 @Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics_SaveGuiItemStack {
+public abstract class MixinGuiGraphics_StoreGlintState {
     @WrapOperation(
             method = "renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;III)V",
             at = @At(
                     value = "NEW",
                     //? >=1.21.9 {
-                    target = "()Lnet/minecraft/client/renderer/item/TrackingItemStackRenderState;"
-                    //? } else {
-                    /*target = "()Lnet/minecraft/client/renderer/item/ItemStackRenderState;"
-                    *///? }
+                    /*target = "()Lnet/minecraft/client/renderer/item/TrackingItemStackRenderState;"
+                    *///?} else {
+                    target = "()Lnet/minecraft/client/renderer/item/ItemStackRenderState;"
+                    //?}
             )
     )
     private
     //? >=1.21.9 {
-    TrackingItemStackRenderState
-    //? } else {
-    /*ItemStackRenderState
-    *///? }
+    /*TrackingItemStackRenderState
+    *///?} else {
+    ItemStackRenderState
+    //?}
     glintcolorizer$storeItemGui(
             //? >=1.21.9 {
-            Operation<TrackingItemStackRenderState> original,
-            //? } else {
-            /*Operation<ItemStackRenderState> original,
-            *///? }
+            /*Operation<TrackingItemStackRenderState> original,
+            *///?} else {
+            Operation<ItemStackRenderState> original,
+            //?}
             @Local(argsOnly = true) ItemStack itemStack
     ) {
         //? >=1.21.9 {
-        TrackingItemStackRenderState
-        //? } else {
-        /*ItemStackRenderState
-         *///? }
+        /*TrackingItemStackRenderState
+        *///?} else {
+        ItemStackRenderState
+         //?}
         itemStackRenderState = original.call();
         if (GlintColorizerConfig.instance().useCustomRenderer) {
             ((ItemRenderStateStorage) itemStackRenderState).glintcolorizer$setItemStack(itemStack);
+            ((ItemRenderStateStorage) itemStackRenderState).glintcolorizer$setRenderMode(GlintMetadata.RenderMode.GUI);
         }
 
         return itemStackRenderState;
@@ -60,5 +62,5 @@ public abstract class MixinGuiGraphics_SaveGuiItemStack {
 }
 //?} else {
 /*@Mixin(GuiGraphics.class)
-public abstract class MixinGuiGraphics_SaveGuiItemStack {}
+public abstract class MixinGuiGraphics_StoreGlintState {}
 *///?}

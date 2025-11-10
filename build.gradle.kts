@@ -119,7 +119,6 @@ dependencies {
     mappings(loom.layered {
         // Mojmap mappings
         officialMojangMappings()
-
         // Parchment mappings (it adds parameter mappings & javadoc)
         optionalProp("deps.parchment_version") {
             parchment("org.parchmentmc.data:parchment-${mc.version}:$it@zip")
@@ -131,14 +130,15 @@ dependencies {
     include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-${loader.loader}:${deps.mixinsquaredVersion}")!!)!!)
     if (loader.isFabric) {
         modImplementation("net.fabricmc:fabric-loader:${deps.fabricLoaderVersion}")!!
-        modImplementation("net.fabricmc.fabric-api:fabric-api:${deps.fabricApiVersion}+${mc.version}")
-        modImplementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+${mc.version}-${loader.loader}")
-        modImplementation("com.terraformersmc:modmenu:${deps.modmenuVersion}")
+        modImplementation("net.fabricmc.fabric-api:fabric-api:${deps.fabricApiVersion}")
+        modImplementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}-${loader.loader}")
+        optionalProp("deps.modmenuVersion") {
+            modImplementation("com.terraformersmc:modmenu:${deps.modmenuVersion}")
+        }
     } else if (loader.isNeoforge) {
         "neoForge"("net.neoforged:neoforge:${deps.neoforgeVersion}")
         implementation("dev.isxander:yet-another-config-lib:${deps.yaclVersion}+${mc.version}-${loader.loader}") { isTransitive = false }
     }
-
 }
 
 // mc_dep fields must be in the format 'x', '>=x', '>=x <=y'
@@ -234,7 +234,6 @@ tasks.processResources {
         put("curseforge", mod.curseforge)
         put("discord", mod.discord)
         put("yacl_version", deps.yaclVersion)
-
         if (loader.isFabric) {
             put("fabric_loader_version", deps.fabricLoaderVersion)
             put("modmenu_version", deps.modmenuVersion)

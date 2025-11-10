@@ -11,9 +11,10 @@
 		"accessor.RenderTypeAccessor",
 		"accessor.RenderTypeCompositeStateBuilderAccessor",
 		"v1_21_4.MixinItemModelResolver_StoreItemStack",
-		"v1_21_6.MixinGuiGraphics_SaveGuiItemStack",
-		"v1_21_6.MixinGuiRenderer_ApplyGuiItemStack",
-		"v1_21_6.MixinItemFrameRenderer_SaveFramedItemStackAndApply",
+		"v1_21_6.MixinGuiGraphics_StoreGlintState",
+		"v1_21_6.MixinGuiRenderer_ApplyGlintState",
+		"v1_21_6.MixinItemEntityRenderer_StoreGlintState",
+		"v1_21_6.MixinItemFrameRenderer_StoreGlintState",
 		"v1_21_6.MixinItemStackRenderState_StoreItemStack",
 		"v1_21_9.MixinEquipmentLayerRenderer_ApplyArmorGlint"
 	],

@@ -22,10 +22,10 @@ public abstract class MixinItemModelResolver_StoreItemStack {
             ItemDisplayContext displayContext,
             Level level,
             //? >=1.21.9 {
-            net.minecraft.world.entity.ItemOwner itemOwner,
-            //? } else {
-            /*net.minecraft.world.entity.LivingEntity entity,
-            *///? }
+            /*net.minecraft.world.entity.ItemOwner itemOwner,
+            *///?} else {
+            net.minecraft.world.entity.LivingEntity entity,
+            //?}
             int seed,
             CallbackInfo ci
     ) {
