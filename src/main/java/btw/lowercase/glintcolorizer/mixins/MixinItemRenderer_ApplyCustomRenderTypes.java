@@ -11,16 +11,16 @@ import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 //? if >=1.21.5
-import net.minecraft.client.renderer.block.model.BakedQuad;
+/*import net.minecraft.client.renderer.block.model.BakedQuad;*/
 //? if <1.21.5
-/*import net.minecraft.client.resources.model.BakedModel;*/
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 //? if >=1.21.4 {
-import net.minecraft.client.renderer.item.ItemStackRenderState;
-//?}
+/*import net.minecraft.client.renderer.item.ItemStackRenderState;
+*///?}
 import net.minecraft.world.item.ItemDisplayContext;
 //? if <1.21.4
-/*import net.minecraft.world.item.ItemStack;*/
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PotionItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,23 +35,23 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
     @Inject(method = "renderItem", at = @At("HEAD"))
     private static void glintcolorizer$storeDisplayType(
             //? <1.21.4
-            /*ItemStack itemStack,*/
+            ItemStack itemStack,
             ItemDisplayContext itemDisplayContext,
             PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j,
             //? >=1.21.4
-            int[] is,
+            /*int[] is,*/
             //? <1.21.5
-            /*BakedModel bakedModel,*/
+            BakedModel bakedModel,
             //? >=1.21.5
-            List<BakedQuad> list,
+            /*List<BakedQuad> list,*/
             //? >=1.21.4
-            RenderType renderType, ItemStackRenderState.FoilType foilType,
+            /*RenderType renderType, ItemStackRenderState.FoilType foilType,*/
             //? if <1.21.4
-            /*boolean bl,*/
+            boolean bl,
             CallbackInfo ci
     ) {
         //? <1.21.4
-        /*GlintMetadata.setItemStack(itemStack);*/
+        GlintMetadata.setItemStack(itemStack);
         GlintMetadata.setRenderMode(switch (itemDisplayContext) {
             case FIRST_PERSON_RIGHT_HAND, THIRD_PERSON_RIGHT_HAND, FIRST_PERSON_LEFT_HAND, THIRD_PERSON_LEFT_HAND ->
                     GlintMetadata.RenderMode.HELD;
@@ -95,10 +95,10 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
 
     @WrapOperation(method =
             //? if >=1.21.6 {
-            "getSpecialFoilBuffer",
-            //?} else {
-            /*"getCompassFoilBuffer",
-            *///?}
+            /*"getSpecialFoilBuffer",
+            *///?} else {
+            "getCompassFoilBuffer",
+            //?}
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
     private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass(MultiBufferSource multiBufferSource, RenderType renderType, Operation<VertexConsumer> original) {
         if (GlintColorizerConfig.instance().useCustomRenderer) {
@@ -112,10 +112,10 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
 
     @WrapOperation(method =
             //? if >=1.21.6 {
-            "getSpecialFoilBuffer",
-            //?} else {
-            /*"getCompassFoilBuffer",
-            *///?}
+            /*"getSpecialFoilBuffer",
+            *///?} else {
+            "getCompassFoilBuffer",
+            //?}
             at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexMultiConsumer;create(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lcom/mojang/blaze3d/vertex/VertexConsumer;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
     private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass$enabled(VertexConsumer glintVertexConsumer, VertexConsumer itemVertexConsumer, Operation<VertexConsumer> original) {
         if (GlintColorizerConfig.instance().useCustomRenderer && !GlintMetadata.getRenderingOptions().enabled) {

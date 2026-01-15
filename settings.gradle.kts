@@ -1,7 +1,3 @@
-plugins {
-	id("dev.kikugie.stonecutter") version "0.7.8"
-}
-
 pluginManagement {
 	repositories {
 		mavenCentral()
@@ -15,13 +11,17 @@ pluginManagement {
 	}
 }
 
+plugins {
+	id("dev.kikugie.stonecutter") version "0.7.10"
+}
+
 stonecutter {
 	kotlinController = true
 	centralScript = "build.gradle.kts"
 	create(rootProject) {
 		fun mc(mcVersion: String, loaders: Iterable<String>) {
 			for (loader in loaders) {
-				vers("$mcVersion-$loader", mcVersion)
+				version("$mcVersion-$loader", mcVersion)
 			}
 		}
 
@@ -42,4 +42,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GlintColorizerModern"
+rootProject.name = "GlintColorizerModern (Stonecutter)"

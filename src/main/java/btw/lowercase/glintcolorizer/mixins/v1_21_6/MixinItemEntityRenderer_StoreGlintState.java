@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.6 {
-import btw.lowercase.glintcolorizer.util.GlintMetadata;
+/*import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
 import net.minecraft.client.renderer.entity.state.ItemEntityRenderState;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -23,7 +23,7 @@ public abstract class MixinItemEntityRenderer_StoreGlintState {
         ((ItemRenderStateStorage) itemEntityRenderState.item).glintcolorizer$setRenderMode(GlintMetadata.RenderMode.DROPPED);
     }
 }
-//?} else {
-/*@Mixin(ItemEntityRenderer.class)
+*///?} else {
+@Mixin(ItemEntityRenderer.class)
 public abstract class MixinItemEntityRenderer_StoreGlintState {}
-*///?}
+//?}

@@ -3,7 +3,7 @@ package btw.lowercase.glintcolorizer.mixins.v1_21_4;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? if >=1.21.4 {
-import btw.lowercase.glintcolorizer.util.GlintMetadata;
+/*import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -22,8 +22,8 @@ public abstract class MixinItemModelResolver_StoreItemStack {
             ItemDisplayContext displayContext,
             Level level,
             //? >=1.21.9 {
-            /*net.minecraft.world.entity.ItemOwner itemOwner,
-            *///?} else {
+            /^net.minecraft.world.entity.ItemOwner itemOwner,
+            ^///?} else {
             net.minecraft.world.entity.LivingEntity entity,
             //?}
             int seed,
@@ -31,16 +31,16 @@ public abstract class MixinItemModelResolver_StoreItemStack {
     ) {
         boolean shouldApply =
                 //? >=1.21.6 {
-                displayContext != ItemDisplayContext.GUI;
-                //?} else {
-                /*true;
-                 *///?}
+                /^displayContext != ItemDisplayContext.GUI;
+                ^///?} else {
+                true;
+                 //?}
         if (shouldApply) {
             GlintMetadata.setItemStack(stack);
         }
     }
 }
-//?} else {
-/*@Mixin(net.minecraft.client.Minecraft.class)
-public abstract class MixinItemModelResolver {}
-*///?}
+*///?} else {
+@Mixin(net.minecraft.client.Minecraft.class)
+public abstract class MixinItemModelResolver_StoreItemStack {}
+//?}

@@ -1,16 +1,18 @@
 package btw.lowercase.glintcolorizer.mixins.v1_21_6;
 
-import btw.lowercase.glintcolorizer.util.GlintMetadata;
+import org.spongepowered.asm.mixin.Mixin;
+
+//? >=1.21.6 {
+/*import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.item.ItemStack;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 
 @Mixin(ItemStackRenderState.class)
 public abstract class MixinItemStackRenderState_StoreItemStack implements ItemRenderStateStorage {
@@ -46,3 +48,7 @@ public abstract class MixinItemStackRenderState_StoreItemStack implements ItemRe
         GlintMetadata.setItemStack(this.glintcolorizer$getItemStack());
     }
 }
+*///?} else {
+@Mixin(net.minecraft.client.Minecraft.class)
+public abstract class MixinItemStackRenderState_StoreItemStack {}
+//?}

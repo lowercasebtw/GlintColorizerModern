@@ -11,7 +11,7 @@ public interface RenderTypeCompositeStateBuilderAccessor {
     RenderType.CompositeState.CompositeStateBuilder withTextureState(RenderStateShard.EmptyTextureStateShard emptyTextureStateShard);
 
     //? if <1.21.5 {
-    /*@Invoker("setShaderState")
+    @Invoker("setShaderState")
     RenderType.CompositeState.CompositeStateBuilder withShaderState(RenderStateShard.ShaderStateShard shaderStateShard);
 
     @Invoker("setDepthTestState")
@@ -25,7 +25,7 @@ public interface RenderTypeCompositeStateBuilderAccessor {
 
     @Invoker("setWriteMaskState")
     RenderType.CompositeState.CompositeStateBuilder withWriteMaskState(RenderStateShard.WriteMaskStateShard writeMaskStateShard);
-    *///?}
+    //?}
 
     @Invoker("setLayeringState")
     RenderType.CompositeState.CompositeStateBuilder withLayeringState(RenderStateShard.LayeringStateShard layeringStateShard);
