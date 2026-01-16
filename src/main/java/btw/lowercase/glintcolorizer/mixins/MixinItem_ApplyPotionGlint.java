@@ -16,7 +16,7 @@ public abstract class MixinItem_ApplyPotionGlint {
     @WrapOperation(method = "isFoil", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEnchanted()Z"))
     private boolean glintcolorizer$enablePotionGlint(ItemStack instance, Operation<Boolean> original) {
         boolean hasGlint = original.call(instance);
-        if (GlintColorizerConfig.instance().shinyPots.enabled && instance.getItem() instanceof PotionItem && !hasGlint) {
+        if (GlintColorizerConfig.shinyPots.enabled && instance.getItem() instanceof PotionItem && !hasGlint) {
             PotionContents potionContents = instance.get(DataComponents.POTION_CONTENTS);
             if (potionContents != null) {
                 hasGlint = potionContents.hasEffects();

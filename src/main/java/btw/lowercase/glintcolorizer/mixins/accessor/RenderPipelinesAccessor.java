@@ -2,7 +2,7 @@ package btw.lowercase.glintcolorizer.mixins.accessor;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-//? if >=1.21.5 {
+//? if >=1.21.6 {
 /*import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.renderer.RenderPipelines;
 import org.spongepowered.asm.mixin.gen.Accessor;

@@ -1,46 +1,32 @@
 package btw.lowercase.glintcolorizer;
 
-import btw.lowercase.glintcolorizer.command.GlintColorizerCommand;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.brigadier.Command;
+import dev.deftu.omnicore.api.OmniResourceLocation;
+import dev.deftu.omnicore.api.client.commands.OmniClientCommands;
+import dev.deftu.omnicore.api.client.screen.OmniScreens;
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
-//? if fabric
 import net.fabricmc.api.ClientModInitializer;
-//? if neoforge {
-/*import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-*///?}
+import net.minecraft.resources.ResourceLocation;
+import org.polyfrost.oneconfig.internal.ui.OneConfigUI;
 
-//? if neoforge {
-/*@Mod(value = "@MODID@", dist = Dist.CLIENT)
-*///?} else {
 @Entrypoint
-//?}
-public class GlintColorizer /*? if fabric {*/ implements ClientModInitializer /*?}*/ {
-    public static final String MOD_ID = "glintcolorizer";
+public class GlintColorizer implements ClientModInitializer {
+	public static ResourceLocation id(String path) {
+		return OmniResourceLocation.createOrThrow(GlintColorizerConstants.ID, path);
+	}
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
-    }
+	@Override
+	public void onInitializeClient() {
+		// Config
+		GlintColorizerConfig.INSTANCE.preload();
 
-    //? if fabric {
-    @Override
-    public void onInitializeClient() {
-        // Config
-        GlintColorizerConfig.load();
-
-        // Commands
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> dispatcher.register(GlintColorizerCommand.create()));
-    }
-    //?}
-
-    //? if neoforge {
-    /*public ExampleMod() {
-        GlintColorizerConfig.load();
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (client, parent) -> ExampleConfig.configScreen(parent));
-    }
-	*///?}
+		// Commands
+		OmniClientCommands.register(OmniClientCommands.literal(GlintColorizerConstants.ID)
+				.executes((context) -> {
+					OmniScreens.openScreen(OneConfigUI.INSTANCE.create(), 1);
+					return Command.SINGLE_SUCCESS;
+				})
+				.build());
+	}
 }

@@ -1,96 +1,43 @@
 package btw.lowercase.glintcolorizer.config;
 
+import btw.lowercase.glintcolorizer.GlintColorizerConstants;
 import btw.lowercase.glintcolorizer.config.category.*;
-import dev.isxander.yacl3.api.ConfigCategory;
-import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionDescription;
-import dev.isxander.yacl3.api.YetAnotherConfigLib;
-import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
-import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
-import dev.isxander.yacl3.config.v2.api.SerialEntry;
-import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
-import dev.isxander.yacl3.platform.YACLPlatform;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
+import org.polyfrost.oneconfig.api.config.v1.Config;
+import org.polyfrost.oneconfig.api.config.v1.annotations.Accordion;
+import org.polyfrost.oneconfig.api.config.v1.annotations.Switch;
 
-import java.util.function.Consumer;
+public class GlintColorizerConfig extends Config {
+	public static final GlintColorizerConfig INSTANCE = new GlintColorizerConfig();
 
-public class GlintColorizerConfig {
-    private static final ConfigClassHandler<GlintColorizerConfig> CONFIG = ConfigClassHandler.createBuilder(GlintColorizerConfig.class)
-            .serializer((config) -> GsonConfigSerializerBuilder.create(config)
-                    .setPath(YACLPlatform.getConfigDir().resolve("glintcolorizer.json"))
-                    .build()
-            ).build();
+	// General
+	@Switch(title = "Enabled")
+	public static boolean enabled = true;
 
-    private static ConfigCategory.Builder createGlintCategory(String name, Consumer<ConfigCategory.Builder> consumer) {
-        ConfigCategory.Builder category = ConfigCategory.createBuilder();
-        category.name(Component.literal(name));
-        consumer.accept(category);
-        return category;
-    }
+	// Armor Glint
+	@Accordion(title = "Armor Glint", index = 0)
+	public static ArmorGlintCategory armorGlint = new ArmorGlintCategory();
 
-    public static Screen getConfigScreen(@Nullable Screen parent) {
-        return YetAnotherConfigLib.create(CONFIG, (defaults, config, builder) -> {
-            builder.title(Component.literal("Glint Colorizer"));
+	// Held Item Glint
+	@Accordion(title = "Held Item Glint", index = 1)
+	public static HeldItemGlintCategory heldItemGlint = new HeldItemGlintCategory();
 
-            ConfigCategory.Builder generalCategory = ConfigCategory.createBuilder();
-            generalCategory.name(Component.literal("General"));
-            generalCategory.option(Option.<Boolean>createBuilder()
-                    .name(Component.literal("Use Custom Renderer"))
-                    .description(OptionDescription.of(Component.literal("Replaces the vanilla glint renderer with a custom one to allow customizability.")))
-                    .binding(
-                            defaults.useCustomRenderer,
-                            () -> config.useCustomRenderer,
-                            (newVal) -> config.useCustomRenderer = newVal)
-                    .controller(TickBoxControllerBuilder::create)
-                    .build());
-            builder.category(generalCategory.build());
+	// Gui Item Glint
+	@Accordion(title = "Gui Item Glint", index = 2)
+	public static GuiItemGlintCategory guiItemGlint = new GuiItemGlintCategory();
 
-            builder.category(createGlintCategory("Armor Glint", (category) -> config.armorGlint.build(category, defaults.armorGlint, config.armorGlint)).build());
-            builder.category(createGlintCategory("Held Item Glint", (category) -> config.heldItemGlint.build(category, defaults.heldItemGlint, config.heldItemGlint)).build());
-            builder.category(createGlintCategory("Gui Item Glint", (category) -> config.guiItemGlint.build(category, defaults.guiItemGlint, config.guiItemGlint)).build());
-            builder.category(createGlintCategory("Framed Item Glint", (category) -> config.framedItemGlint.build(category, defaults.framedItemGlint, config.framedItemGlint)).build());
-            builder.category(createGlintCategory("Dropped Item Glint", (category) -> config.droppedItemGlint.build(category, defaults.droppedItemGlint, config.droppedItemGlint)).build());
-            builder.category(createGlintCategory("Shiny Pots", (category) -> config.shinyPots.build(category, defaults.shinyPots, config.shinyPots)).build());
+	// Framed Item Glint
+	@Accordion(title = "Framed Item Glint", index = 3)
+	public static FramedItemGlintCategory framedItemGlint = new FramedItemGlintCategory();
 
-            return builder;
-        }).generateScreen(parent);
-    }
+	// Dropped Item Glint
+	@Accordion(title = "Dropped Item Glint", index = 4)
+	public static DroppedItemGlintCategory droppedItemGlint = new DroppedItemGlintCategory();
 
-    public static void load() {
-        CONFIG.load();
-    }
+	// Shiny Pots
+	@Accordion(title = "Shiny Pots", index = 5)
+	public static ShinyPotsCategory shinyPots = new ShinyPotsCategory();
 
-    public static GlintColorizerConfig instance() {
-        return CONFIG.instance();
-    }
-
-    // General
-    @SerialEntry
-    public boolean useCustomRenderer = true;
-
-    // Armor Glint
-    @SerialEntry
-    public ArmorGlintCategory armorGlint = new ArmorGlintCategory();
-
-    // Held Item Glint
-    @SerialEntry
-    public HeldItemGlintCategory heldItemGlint = new HeldItemGlintCategory();
-
-    // Gui Item Glint
-    @SerialEntry
-    public GuiItemGlintCategory guiItemGlint = new GuiItemGlintCategory();
-
-    // Framed Item Glint
-    @SerialEntry
-    public FramedItemGlintCategory framedItemGlint = new FramedItemGlintCategory();
-
-    // Dropped Item Glint
-    @SerialEntry
-    public DroppedItemGlintCategory droppedItemGlint = new DroppedItemGlintCategory();
-
-    // Shiny Pots
-    @SerialEntry
-    public ShinyPotsCategory shinyPots = new ShinyPotsCategory();
+	public GlintColorizerConfig() {
+		super(GlintColorizerConstants.ID + ".json", "/assets/" + GlintColorizerConstants.ID + "/icon.png", GlintColorizerConstants.NAME, Category.QOL);
+	}
 }

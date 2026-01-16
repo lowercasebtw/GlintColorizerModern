@@ -10,57 +10,59 @@ import net.minecraft.world.item.PotionItem;
 import java.util.Objects;
 
 public class GlintMetadata {
-    public enum RenderMode {
-        HELD,
-        SHINY,
-        GUI,
-        DROPPED,
-        FRAMED
-    }
+	public enum RenderMode {
+		HELD,
+		SHINY,
+		GUI,
+		DROPPED,
+		FRAMED
+	}
 
-    private static RenderMode cachedRenderMode = RenderMode.HELD;
-    private static ItemStack cachedItemStack = ItemStack.EMPTY;
+	private static RenderMode cachedRenderMode = RenderMode.HELD;
+	private static ItemStack cachedItemStack = ItemStack.EMPTY;
 
-    public static void setRenderMode(RenderMode renderMode) {
-        if (!(renderMode == RenderMode.GUI && cachedRenderMode == RenderMode.SHINY)) {
-            // preserve shiny render mode !
-            cachedRenderMode = renderMode;
-        }
-    }
+	public static void setRenderMode(RenderMode renderMode) {
+		if (!(renderMode == RenderMode.GUI && cachedRenderMode == RenderMode.SHINY)) {
+			// preserve shiny render mode !
+			cachedRenderMode = renderMode;
+		}
+	}
 
-    public static RenderMode getRenderMode() {
-        return cachedRenderMode;
-    }
+	public static RenderMode getRenderMode() {
+		return cachedRenderMode;
+	}
 
-    public static void setItemStack(ItemStack itemStack) {
-        if (!ItemStack.matches(itemStack, cachedItemStack)) {
-            cachedItemStack = itemStack;
-        }
-    }
+	public static void setItemStack(ItemStack itemStack) {
+		if (!ItemStack.matches(itemStack, cachedItemStack)) {
+			cachedItemStack = itemStack;
+		}
+	}
 
-    public static ItemStack getItemStack() {
-        return cachedItemStack;
-    }
+	public static ItemStack getItemStack() {
+		return cachedItemStack;
+	}
 
-    public static BaseGlint getRenderingOptions() {
-        return switch (cachedRenderMode) {
-            case HELD -> GlintColorizerConfig.instance().heldItemGlint;
-            case SHINY -> GlintColorizerConfig.instance().shinyPots;
-            case GUI -> GlintColorizerConfig.instance().guiItemGlint;
-            case DROPPED -> GlintColorizerConfig.instance().droppedItemGlint;
-            case FRAMED -> GlintColorizerConfig.instance().framedItemGlint;
-        };
-    }
+	public static BaseGlint getRenderingOptions() {
+		return switch (cachedRenderMode) {
+			case HELD -> GlintColorizerConfig.heldItemGlint;
+			case SHINY -> GlintColorizerConfig.shinyPots;
+			case GUI -> GlintColorizerConfig.guiItemGlint;
+			case DROPPED -> GlintColorizerConfig.droppedItemGlint;
+			case FRAMED -> GlintColorizerConfig.framedItemGlint;
+		};
+	}
 
-    public static int getGlintColor(GlintLayer layer, boolean isArmor) {
-        BaseGlint options = isArmor ? GlintColorizerConfig.instance().armorGlint : getRenderingOptions();
-        if (cachedItemStack.getItem() instanceof PotionItem && GlintColorizerConfig.instance().shinyPots.useCustomColor) {
-            options = GlintColorizerConfig.instance().shinyPots;
-            if (options instanceof ShinyPotsCategory shinyPotsCategory && shinyPotsCategory.usePotionBasedColor && cachedItemStack.has(DataComponents.POTION_CONTENTS)) {
-                return Objects.requireNonNull(cachedItemStack.getComponents().get(DataComponents.POTION_CONTENTS)).getColor();
-            }
-        }
+	public static int getGlintColor(GlintLayer layer, boolean isArmor) {
+		BaseGlint options = isArmor ? GlintColorizerConfig.armorGlint : getRenderingOptions();
+		if (cachedItemStack.getItem() instanceof PotionItem && GlintColorizerConfig.shinyPots.useCustomColor) {
+			options = GlintColorizerConfig.shinyPots;
+			if (options instanceof ShinyPotsCategory shinyPotsCategory && shinyPotsCategory.usePotionBasedColor && cachedItemStack.has(DataComponents.POTION_CONTENTS)) {
+				return Objects.requireNonNull(cachedItemStack.getComponents().get(DataComponents.POTION_CONTENTS)).getColor();
+			}
+		}
 
-        return (options.individualStrokes ? (layer == GlintLayer.FIRST ? options.strokeOneColor : options.strokeTwoColor) : options.color).getRGB();
-    }
+		return (options.individualStrokes
+				? (layer == GlintLayer.FIRST ? options.strokeOneColor : options.strokeTwoColor)
+				: options.color).getArgb();
+	}
 }

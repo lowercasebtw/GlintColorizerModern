@@ -4,7 +4,7 @@ import btw.lowercase.glintcolorizer.GlintColorizer;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderTypeCompositeStateBuilderAccessor;
 import btw.lowercase.glintcolorizer.mixins.accessor.RenderTypeAccessor;
-//? if >=1.21.5 {
+//? if >=1.21.6 {
 /*import btw.lowercase.glintcolorizer.mixins.accessor.RenderPipelinesAccessor;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
@@ -25,7 +25,7 @@ import org.lwjgl.glfw.GLFW;
 public class GlintPipeline {
     public static final ResourceLocation GLINT_TEXTURE_PATH = GlintColorizer.id("textures/misc/enchanted_item_glint.png");
 
-    //? if <1.21.5 {
+    //? if <1.21.6 {
     public static final ShaderProgram GLINT_SHADER = new ShaderProgram(
             GlintColorizer.id("core/glint"),
             DefaultVertexFormat.POSITION_TEX,
@@ -107,7 +107,7 @@ public class GlintPipeline {
 
     private static RenderType makeItemGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer, boolean shiny) {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
-        //? if <1.21.5
+        //? if <1.21.6
         compositeStateBuilder.withShaderState(GLINT_SHADER_SHARD);
         compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(
                 GLINT_TEXTURE_PATH,
@@ -116,7 +116,7 @@ public class GlintPipeline {
                 false)
         );
         compositeStateBuilder.withTexturingState(texturingStateShard);
-        //? if <1.21.5 {
+        //? if <1.21.6 {
         compositeStateBuilder.withDepthTestState(shiny ? RenderType.NO_DEPTH_TEST : RenderType.EQUAL_DEPTH_TEST);
         compositeStateBuilder.withWriteMaskState(RenderType.COLOR_WRITE);
         compositeStateBuilder.withCullState(RenderType.CULL);
@@ -124,12 +124,12 @@ public class GlintPipeline {
         //?}
         return RenderTypeAccessor.createRenderType(
                 (shiny ? "shiny_" : "") + "item_glint_layer_" + (layer.ordinal() + 1),
-                //? <1.21.5 {
+                //? <1.21.6 {
                 DefaultVertexFormat.POSITION_TEX,
                 VertexFormat.Mode.QUADS,
                 //?}
                 1536,
-                //? >=1.21.5
+                //? >=1.21.6
                 /*layer == GlintLayer.FIRST ? (shiny ? SHINY_ITEM_GLINT_1ST_LAYER_PIPELINE : ITEM_GLINT_1ST_LAYER_PIPELINE) : (shiny ? SHINY_ITEM_GLINT_2ND_LAYER_PIPELINE : ITEM_GLINT_2ND_LAYER_PIPELINE),*/
                 compositeStateBuilder.buildCompositeState(false));
     }
@@ -151,7 +151,7 @@ public class GlintPipeline {
     }
 
     // Armor
-    //? if >=1.21.5 {
+    //? if >=1.21.6 {
     /*private static final RenderPipeline.Snippet ARMOR_GLINT_PIPELINE_SNIPPET =
             RenderPipeline.builder(GLINT_PIPELINE_SNIPPET)
                     .withDepthWrite(false)
@@ -172,10 +172,10 @@ public class GlintPipeline {
     public static final RenderType ARMOR_GLINT_1ST_LAYER_RENDERTYPE = makeArmorGlintLayer(new RenderStateShard.TexturingStateShard(
             "armor_glint_layer_1_texturing",
             () -> {
-                final float scale = 0.33333334F * GlintColorizerConfig.instance().armorGlint.scale;
+                final float scale = 0.33333334F * GlintColorizerConfig.armorGlint.scale;
                 RenderSystem.setTextureMatrix(new Matrix4f()
                         .scale(scale)
-                        .rotateZ((float) Math.toRadians(30.0F - GlintColorizerConfig.instance().armorGlint.strokeOneRotation))
+                        .rotateZ((float) Math.toRadians(30.0F - GlintColorizerConfig.armorGlint.strokeOneRotation))
                         .translate(0.0F, getArmorTilt() * 0.001F * 20.0F, 0.0F));
             },
             RenderSystem::resetTextureMatrix
@@ -184,10 +184,10 @@ public class GlintPipeline {
     public static final RenderType ARMOR_GLINT_2ND_LAYER_RENDERTYPE = makeArmorGlintLayer(new RenderStateShard.TexturingStateShard(
             "armor_glint_layer_2_texturing",
             () -> {
-                final float scale = 0.33333334F * GlintColorizerConfig.instance().armorGlint.scale;
+                final float scale = 0.33333334F * GlintColorizerConfig.armorGlint.scale;
                 RenderSystem.setTextureMatrix(new Matrix4f()
                         .scale(scale)
-                        .rotateZ((float) Math.toRadians(30.0F - GlintColorizerConfig.instance().armorGlint.strokeTwoRotation))
+                        .rotateZ((float) Math.toRadians(30.0F - GlintColorizerConfig.armorGlint.strokeTwoRotation))
                         .translate(0.0F, getArmorTilt() * (0.001F + 0.003F) * 20.0F, 0.0F));
             },
             RenderSystem::resetTextureMatrix
@@ -195,7 +195,7 @@ public class GlintPipeline {
 
     private static RenderType makeArmorGlintLayer(RenderStateShard.TexturingStateShard texturingStateShard, GlintLayer layer) {
         RenderTypeCompositeStateBuilderAccessor compositeStateBuilder = (RenderTypeCompositeStateBuilderAccessor) RenderType.CompositeState.builder();
-        //? <1.21.5
+        //? <1.21.6
         compositeStateBuilder.withShaderState(GLINT_SHADER_SHARD);
         compositeStateBuilder.withTextureState(new RenderStateShard.TextureStateShard(
                 GLINT_TEXTURE_PATH,
@@ -205,7 +205,7 @@ public class GlintPipeline {
         );
         compositeStateBuilder.withTexturingState(texturingStateShard);
         compositeStateBuilder.withLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING);
-        //? <1.21.5 {
+        //? <1.21.6 {
         compositeStateBuilder.withDepthTestState(RenderType.EQUAL_DEPTH_TEST);
         compositeStateBuilder.withWriteMaskState(RenderType.COLOR_WRITE);
         compositeStateBuilder.withCullState(RenderType.NO_CULL);
@@ -213,19 +213,19 @@ public class GlintPipeline {
         //?}
         return RenderTypeAccessor.createRenderType(
                 "armor_glint_layer_" + (layer.ordinal() + 1),
-                //? if <1.21.5 {
+                //? if <1.21.6 {
                 DefaultVertexFormat.POSITION_TEX,
                 VertexFormat.Mode.QUADS,
                 //?}
                 1536,
-                //? if >=1.21.5
+                //? if >=1.21.6
                 /*layer == GlintLayer.FIRST ? ARMOR_GLINT_1ST_LAYER_PIPELINE : ARMOR_GLINT_2ND_LAYER_PIPELINE,*/
                 compositeStateBuilder.buildCompositeState(false));
     }
 
     // Utility
     private static float getArmorTilt() {
-        return (float) ((Util.getMillis() * GlintColorizerConfig.instance().armorGlint.speed * 8.0) % 300000L) / 500.0F;
+        return (float) ((Util.getMillis() * GlintColorizerConfig.armorGlint.speed * 8.0) % 300000L) / 500.0F;
     }
 
     private static float getSystemTime() {

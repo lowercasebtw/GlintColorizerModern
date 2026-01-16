@@ -3,11 +3,12 @@ pluginManagement {
 		mavenCentral()
 		gradlePluginPortal()
 		maven("https://maven.fabricmc.net")
-		maven("https://maven.neoforged.net/releases")
 		maven("https://maven.architectury.dev")
 		maven("https://maven.kikugie.dev/snapshots")
 		maven("https://maven.kikugie.dev/releases")
 		maven("https://repo.polyfrost.cc/releases")
+		maven("https://maven.deftu.dev/releases")
+		maven("https://maven.deftu.dev/snapshots")
 	}
 }
 
@@ -19,20 +20,15 @@ stonecutter {
 	kotlinController = true
 	centralScript = "build.gradle.kts"
 	create(rootProject) {
-		fun mc(mcVersion: String, loaders: Iterable<String>) {
-			for (loader in loaders) {
+		fun register(loader: String, mcVersions: Iterable<String>) {
+			for (mcVersion in mcVersions) {
 				version("$mcVersion-$loader", mcVersion)
 			}
 		}
 
-		mc("1.21.3", listOf("fabric"))
-		mc("1.21.4", listOf("fabric"))
-		mc("1.21.5", listOf("fabric"))
-		mc("1.21.8", listOf("fabric"))
-		mc("1.21.10", listOf("fabric"))
-		mc("1.21.11", listOf("fabric"))
+		register("fabric", listOf("1.21.4", "1.21.8", "1.21.10"))
 
-		vcsVersion = "1.21.8-fabric"
+		vcsVersion = "1.21.4-fabric"
 	}
 }
 
@@ -42,4 +38,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GlintColorizerModern (Stonecutter)"
+rootProject.name = "GlintColorizerModern"
