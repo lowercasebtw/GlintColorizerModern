@@ -4,11 +4,10 @@ import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import com.mojang.brigadier.Command;
 import dev.deftu.omnicore.api.OmniResourceLocation;
 import dev.deftu.omnicore.api.client.commands.OmniClientCommands;
-import dev.deftu.omnicore.api.client.screen.OmniScreens;
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.resources.ResourceLocation;
-import org.polyfrost.oneconfig.internal.ui.OneConfigUI;
+import org.polyfrost.oneconfig.utils.v1.dsl.ScreensKt;
 
 @Entrypoint
 public class GlintColorizer implements ClientModInitializer {
@@ -24,7 +23,8 @@ public class GlintColorizer implements ClientModInitializer {
 		// Commands
 		OmniClientCommands.register(OmniClientCommands.literal(GlintColorizerConstants.ID)
 				.executes((context) -> {
-					OmniScreens.openScreen(OneConfigUI.INSTANCE.create(), 1);
+					ScreensKt.openUI(GlintColorizerConfig.INSTANCE);
+					context.getSource().replyChat("enabled? " + GlintColorizerConfig.enabled);
 					return Command.SINGLE_SUCCESS;
 				})
 				.build());

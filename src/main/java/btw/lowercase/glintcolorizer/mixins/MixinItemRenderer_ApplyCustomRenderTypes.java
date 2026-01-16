@@ -21,11 +21,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //? if >=1.21.6 {
-/*import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import java.util.List;
-*///? } else {
-import net.minecraft.client.resources.model.BakedModel;
-//? }
+//?} else {
+/*import net.minecraft.client.resources.model.BakedModel;
+*///?}
 
 @Mixin(ItemRenderer.class)
 public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
@@ -38,9 +38,9 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
 			final int packedOverlay,
 			final int[] tintLayers,
 			//? <1.21.6
-			final BakedModel model,
+			/*final BakedModel model,*/
 			//? >=1.21.6
-			/*final List<BakedQuad> list,*/
+			final List<BakedQuad> list,
 			final RenderType renderType,
 			final ItemStackRenderState.FoilType foilType,
 			final CallbackInfo ci
@@ -70,7 +70,7 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
 
     // TODO 1.21.9 EquipmentLayerRenderer
     //? <=1.21.8 {
-    @Inject(method = "getArmorFoilBuffer", at = @At("RETURN"), cancellable = true)
+    /*@Inject(method = "getArmorFoilBuffer", at = @At("RETURN"), cancellable = true)
     private static void glintcolorizer$replaceWithCustomRenderer$armor(MultiBufferSource multiBufferSource, RenderType armorRenderType, boolean hasFoil, CallbackInfoReturnable<VertexConsumer> cir) {
         if (GlintColorizerConfig.enabled && hasFoil) {
             final VertexConsumer armorVertexConsumer = multiBufferSource.getBuffer(armorRenderType);
@@ -83,14 +83,14 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
             }
         }
     }
-    //?}
+    *///?}
 
     @WrapOperation(method =
             //? if >=1.21.6 {
-            /*"getSpecialFoilBuffer",
-            *///?} else {
-            "getCompassFoilBuffer",
-            //?}
+            "getSpecialFoilBuffer",
+            //?} else {
+            /*"getCompassFoilBuffer",
+            *///?}
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
     private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass(MultiBufferSource multiBufferSource, RenderType renderType, Operation<VertexConsumer> original) {
         if (GlintColorizerConfig.enabled) {
@@ -104,10 +104,10 @@ public abstract class MixinItemRenderer_ApplyCustomRenderTypes {
 
     @WrapOperation(method =
             //? if >=1.21.6 {
-            /*"getSpecialFoilBuffer",
-            *///?} else {
-            "getCompassFoilBuffer",
-            //?}
+            "getSpecialFoilBuffer",
+            //?} else {
+            /*"getCompassFoilBuffer",
+            *///?}
             at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexMultiConsumer;create(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lcom/mojang/blaze3d/vertex/VertexConsumer;)Lcom/mojang/blaze3d/vertex/VertexConsumer;", ordinal = 0))
     private static VertexConsumer glintcolorizer$replaceWithCustomRenderer$compass$enabled(VertexConsumer glintVertexConsumer, VertexConsumer itemVertexConsumer, Operation<VertexConsumer> original) {
         if (GlintColorizerConfig.enabled && !GlintMetadata.getRenderingOptions().enabled) {

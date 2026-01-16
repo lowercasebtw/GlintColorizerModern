@@ -38,6 +38,6 @@ public class GlintColorizerConfig extends Config {
 	public static ShinyPotsCategory shinyPots = new ShinyPotsCategory();
 
 	public GlintColorizerConfig() {
-		super(GlintColorizerConstants.ID + ".json", "/assets/" + GlintColorizerConstants.ID + "/icon.png", GlintColorizerConstants.NAME, Category.QOL);
+		super(GlintColorizerConstants.ID + ".json", "/assets/" + GlintColorizerConstants.ID + "/" + GlintColorizerConstants.ID + "_dark.svg", GlintColorizerConstants.NAME, Category.QOL);
 	}
 }

@@ -3,10 +3,9 @@ package btw.lowercase.glintcolorizer.mixins.v1_21_6;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.6 {
-/*import btw.lowercase.glintcolorizer.util.GlintMetadata;
+import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -42,13 +41,32 @@ public abstract class MixinItemStackRenderState_StoreItemStack implements ItemRe
         this.glintcolorizer$renderMode = renderMode;
     }
 
-    @Inject(method = "render", at = @At("HEAD"))
-    private void glintcolorizer$applyState(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, CallbackInfo ci) {
-        GlintMetadata.setRenderMode(this.glintcolorizer$getRenderMode());
+    @Inject(
+			//? >=1.21.10 {
+			method = "submit",
+			//? } else {
+			/*method = "render",
+			*///? }
+			at = @At("HEAD")
+	)
+    private void glintcolorizer$applyState(
+			PoseStack poseStack,
+			//? >=1.21.10 {
+			net.minecraft.client.renderer.SubmitNodeCollector nodeCollector,
+			//? } else {
+			/*net.minecraft.client.renderer.MultiBufferSource bufferSource,
+			*///? }
+			int packedLight,
+			int packedOverlay,
+			//? >=1.21.10
+			int outlineColor,
+			CallbackInfo ci
+	) {
+		GlintMetadata.setRenderMode(this.glintcolorizer$getRenderMode());
         GlintMetadata.setItemStack(this.glintcolorizer$getItemStack());
     }
 }
-*///?} else {
-@Mixin(net.minecraft.client.Minecraft.class)
+//?} else {
+/*@Mixin(net.minecraft.client.Minecraft.class)
 public abstract class MixinItemStackRenderState_StoreItemStack {}
-//?}
+*///?}
