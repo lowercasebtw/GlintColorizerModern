@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.ItemFrameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.6 {
-/*import btw.lowercase.glintcolorizer.util.GlintMetadata;
+import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
 import net.minecraft.client.renderer.entity.state.ItemFrameRenderState;
 import net.minecraft.world.entity.decoration.ItemFrame;
@@ -23,7 +23,7 @@ public abstract class MixinItemFrameRenderer_StoreGlintState {
         ((ItemRenderStateStorage) itemFrameRenderState.item).glintcolorizer$setRenderMode(GlintMetadata.RenderMode.FRAMED);
     }
 }
-*///?} else {
-@Mixin(ItemFrameRenderer.class)
+//?} else {
+/*@Mixin(ItemFrameRenderer.class)
 public abstract class MixinItemFrameRenderer_StoreGlintState {}
-//?}
+*///?}

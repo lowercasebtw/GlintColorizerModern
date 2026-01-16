@@ -3,7 +3,7 @@ package btw.lowercase.glintcolorizer.mixins.v1_21_6;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.6 {
-/*import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
+import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
 import net.minecraft.client.gui.render.GuiRenderer;
 import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,7 +22,7 @@ public abstract class MixinGuiRenderer_ApplyGlintState {
         GlintMetadata.setRenderMode(itemRenderStateStorage.glintcolorizer$getRenderMode());
     }
 }
-*///?} else {
-@Mixin(net.minecraft.client.Minecraft.class)
+//?} else {
+/*@Mixin(net.minecraft.client.Minecraft.class)
 public abstract class MixinGuiRenderer_ApplyGlintState {}
-//?}
+*///?}

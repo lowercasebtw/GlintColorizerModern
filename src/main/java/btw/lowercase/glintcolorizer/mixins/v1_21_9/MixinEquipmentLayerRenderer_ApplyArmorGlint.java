@@ -3,7 +3,7 @@ package btw.lowercase.glintcolorizer.mixins.v1_21_9;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.9 {
-/*import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
+import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import btw.lowercase.glintcolorizer.util.GlintPipeline;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -33,7 +33,7 @@ public abstract class MixinEquipmentLayerRenderer_ApplyArmorGlint {
 		original.call(instance, model, renderState, poseStack, renderType, packedLight, overlayUv, color, textureAtlasSprite, light, crumblingOverlay);
 	}
 }
-*///?} else {
-@Mixin(net.minecraft.client.Minecraft.class)
+//?} else {
+/*@Mixin(net.minecraft.client.Minecraft.class)
 public abstract class MixinEquipmentLayerRenderer_ApplyArmorGlint {}
-//?}
+*///?}
