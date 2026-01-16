@@ -21,19 +21,19 @@ public abstract class MixinItemModelResolver_StoreItemStack {
             ItemDisplayContext displayContext,
             Level level,
             //? >=1.21.9 {
-            net.minecraft.world.entity.ItemOwner itemOwner,
-			 //?} else {
-            /*net.minecraft.world.entity.LivingEntity entity,
-            *///?}
+            /*net.minecraft.world.entity.ItemOwner itemOwner,
+			 *///?} else {
+            net.minecraft.world.entity.LivingEntity entity,
+            //?}
             int seed,
             CallbackInfo ci
     ) {
         final boolean shouldApply =
                 //? >=1.21.6 {
-                displayContext != ItemDisplayContext.GUI;
-				//?} else {
-                /*true;
-				*///?}
+                /*displayContext != ItemDisplayContext.GUI;
+				*///?} else {
+                true;
+				//?}
         if (shouldApply) {
             GlintMetadata.setItemStack(stack);
         }

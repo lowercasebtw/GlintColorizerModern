@@ -4,7 +4,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
 
 //? >=1.21.8 {
-import btw.lowercase.glintcolorizer.util.GlintMetadata;
+/*import btw.lowercase.glintcolorizer.util.GlintMetadata;
 import btw.lowercase.glintcolorizer.util.ItemRenderStateStorage;
 import btw.lowercase.glintcolorizer.config.GlintColorizerConfig;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -15,10 +15,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.renderer.item.TrackingItemStackRenderState;
 
 //? >=1.21.9 {
-import net.minecraft.client.renderer.item.TrackingItemStackRenderState;
- //?} else {
-/*import net.minecraft.client.renderer.item.ItemStackRenderState;
-*///?}
+/^import net.minecraft.client.renderer.item.TrackingItemStackRenderState;
+ ^///?} else {
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+//?}
 
 @Mixin(GuiGraphics.class)
 public abstract class MixinGuiGraphics_StoreGlintState {
@@ -39,7 +39,7 @@ public abstract class MixinGuiGraphics_StoreGlintState {
 		return itemStackRenderState;
 	}
 }
-//?} else {
-/*@Mixin(GuiGraphics.class)
+*///?} else {
+@Mixin(GuiGraphics.class)
 public abstract class MixinGuiGraphics_StoreGlintState {}
-*///?}
+//?}
